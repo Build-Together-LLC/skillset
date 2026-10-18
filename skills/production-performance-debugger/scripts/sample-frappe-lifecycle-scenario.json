@@ -1,0 +1,71 @@
+{
+  "name": "frappe-login-and-api-lifecycle-smoke",
+  "baseUrl": "https://example.frappe.site",
+  "concurrency": 1,
+  "iterations": 1,
+  "thinkMs": 250,
+  "abortOnFail": false,
+  "headers": {
+    "accept": "application/json, text/html;q=0.9",
+    "user-agent": "production-performance-debugger/1.0"
+  },
+  "vars": {
+    "usr": "user@example.com",
+    "pwd": "CHANGE_ME",
+    "targetEmployee": "EMP-0001"
+  },
+  "steps": [
+    {
+      "name": "open-login-page",
+      "method": "GET",
+      "path": "/login",
+      "expectStatus": [200, 302],
+      "extract": {
+        "csrfTokenFromHtml": {
+          "from": "body_regex",
+          "regex": "csrf_token[\\s\\S]*?['\"]([a-f0-9]{20,})['\"]",
+          "group": 1
+        }
+      }
+    },
+    {
+      "name": "login",
+      "method": "POST",
+      "path": "/api/method/login",
+      "headers": {
+        "content-type": "application/x-www-form-urlencoded"
+      },
+      "form": {
+        "usr": "{{usr}}",
+        "pwd": "{{pwd}}"
+      },
+      "expectStatus": [200],
+      "extract": {
+        "sid": {
+          "from": "cookie",
+          "name": "sid"
+        }
+      }
+    },
+    {
+      "name": "boot/session-info",
+      "method": "GET",
+      "path": "/api/method/frappe.sessions.get",
+      "expectStatus": [200]
+    },
+    {
+      "name": "target-business-api",
+      "method": "POST",
+      "path": "/api/method/your.app.path.method",
+      "headers": {
+        "content-type": "application/json"
+      },
+      "json": {
+        "employee": "{{targetEmployee}}",
+        "start": 0,
+        "page_length": 20
+      },
+      "expectStatus": [200]
+    }
+  ]
+}

@@ -1,0 +1,96 @@
+{
+  "themes": {
+    "walnut": {
+      "primary": "1A3C5E",
+      "secondary": "2E75B6",
+      "tertiary": "4A86C8",
+      "header_fill": "BDD7EE",
+      "header_text": "1A3C5E",
+      "stripe": "F2F7FB",
+      "border": "AAAAAA",
+      "link": "1D4ED8"
+    },
+    "green": {
+      "primary": "0F764A",
+      "secondary": "1F272E",
+      "tertiary": "475569",
+      "header_fill": "0F764A",
+      "header_text": "FFFFFF",
+      "stripe": "F1F8F4",
+      "border": "CBD5E1",
+      "link": "1D4ED8"
+    },
+    "blue": {
+      "primary": "1D4ED8",
+      "secondary": "1E3A8A",
+      "tertiary": "475569",
+      "header_fill": "1D4ED8",
+      "header_text": "FFFFFF",
+      "stripe": "EFF6FF",
+      "border": "CBD5E1",
+      "link": "0B5FD6"
+    },
+    "purple": {
+      "primary": "6D28D9",
+      "secondary": "4C1D95",
+      "tertiary": "52525B",
+      "header_fill": "6D28D9",
+      "header_text": "FFFFFF",
+      "stripe": "F5F3FF",
+      "border": "D4D4D8",
+      "link": "5B21B6"
+    },
+    "orange": {
+      "primary": "C2410C",
+      "secondary": "7C2D12",
+      "tertiary": "57534E",
+      "header_fill": "C2410C",
+      "header_text": "FFFFFF",
+      "stripe": "FFF7ED",
+      "border": "D6D3D1",
+      "link": "1D4ED8"
+    },
+    "teal": {
+      "primary": "0F766E",
+      "secondary": "134E4A",
+      "tertiary": "475569",
+      "header_fill": "0F766E",
+      "header_text": "FFFFFF",
+      "stripe": "F0FDFA",
+      "border": "CBD5E1",
+      "link": "1D4ED8"
+    },
+    "slate": {
+      "primary": "334155",
+      "secondary": "0F172A",
+      "tertiary": "64748B",
+      "header_fill": "334155",
+      "header_text": "FFFFFF",
+      "stripe": "F8FAFC",
+      "border": "CBD5E1",
+      "link": "1D4ED8"
+    }
+  },
+  "callouts": {
+    "NOTE": {
+      "fill": "EFF6FF",
+      "edge": "2563EB"
+    },
+    "TIP": {
+      "fill": "ECFDF5",
+      "edge": "16A34A"
+    },
+    "WARNING": {
+      "fill": "FEF2F2",
+      "edge": "DC2626"
+    },
+    "EXAMPLE": {
+      "fill": "FFFBEB",
+      "edge": "D97706"
+    },
+    "SECURITY": {
+      "fill": "F5F3FF",
+      "edge": "7C3AED"
+    }
+  }
+}

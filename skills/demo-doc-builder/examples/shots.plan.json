@@ -1,0 +1,10 @@
+{
+  "base": "file://{{PLAN_DIR}}",
+  "outDir": "work/shots",
+  "viewport": { "width": 1000, "height": 560 },
+  "contexts": { "default": {} },
+  "shots": [
+    { "name": "01_settings", "url": "/demo-app.html", "wait": 500 },
+    { "name": "02_saved", "url": "/demo-app.html", "wait": 300, "steps": [ { "click": "#save", "wait": 500 } ] }
+  ]
+}

@@ -1,0 +1,31 @@
+{
+  "theme": "green",
+  "footer": "Acme setup guide",
+  "title": "Acme setup guide",
+  "author": "Your Name",
+  "cover": {
+    "title": "Acme Setup Guide",
+    "subtitle": "Install, configure and verify",
+    "rows": [["Version", "1.0"], ["Tested with", "Acme 2.4 and Ubuntu 24.04"], ["Source", "[[the repository|https://github.com/example/acme]]"]],
+    "note": "Every key, password and number in this guide is an example. Generate your own."
+  },
+  "contents": [["1  Overview", "How the pieces fit"], ["2  Configure", "Fill the settings and test"], ["3  Reference", "Commands and links"]],
+  "blocks": [
+    { "type": "h1", "text": "1  Overview" },
+    { "type": "p", "text": "Acme is documented at https://docs.example.com. This paragraph shows **bold**, *italic*, `inline code` and a [[named link|https://example.com/page]]." },
+    { "type": "img", "path": "work/img/diagram_flow.png", "caption": "How the pieces talk to each other.", "label": "flow" },
+    { "type": "p", "text": "The flow in Figure {fig:flow} shows who calls whom." },
+    { "type": "h1", "text": "2  Configure" },
+    { "type": "steps", "items": ["Open the settings page.", "Fill in the server address and API key.", "Click **Save and test**."] },
+    { "type": "img", "path": "work/img/01_settings.png", "caption": "The settings page. Numbers match the table.", "label": "settings" },
+    { "type": "table", "caption": "Settings fields", "rows": [["#", "Field", "Example", "Notes"], ["1", "Server address", "`https://acme.example.com`", "No trailing slash"], ["2", "API key", "`example-secret-value-1234`", "Stored encrypted"]], "widths": [0.4, 1.6, 2.4, 2.0] },
+    { "type": "code", "title": "Terminal", "text": "# check the server answers\ncurl -i https://acme.example.com/api/ping\n# expected: HTTP/2 200" },
+    { "type": "expect", "text": "the page shows *Connected successfully* in green (Figure {fig:saved})." },
+    { "type": "img", "path": "work/img/02_saved.png", "caption": "After clicking Save and test.", "label": "saved" },
+    { "type": "callout", "kind": "SECURITY", "text": "Never paste a real key into a chat, a ticket or Git." },
+    { "type": "callout", "kind": "TIP", "text": "Use a password manager for the generated secrets." },
+    { "type": "h1", "text": "3  Reference" },
+    { "type": "img", "path": "work/img/diagram_layout.png", "caption": "Where the files live on the server." },
+    { "type": "bullets", "items": ["Docs: https://docs.example.com", "Docker: https://docs.docker.com/engine/install/ubuntu/"] }
+  ]
+}

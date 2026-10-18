@@ -1,0 +1,18 @@
+{
+  "theme": "green",
+  "outDir": "work/img",
+  "width": 1100,
+  "diagrams": [
+    { "name": "flow", "type": "flow", "title": "How the pieces talk to each other",
+      "note": "Both directions must be reachable, and each is protected by its own secret.",
+      "items": [
+        { "box": { "title": "Browser", "sub": "the web page", "color": "neutral" } },
+        { "arrow": { "dir": "both", "labels": ["HTTPS", "login"] } },
+        { "box": { "title": "Your app", "sub": "settings, users, data", "color": "green" } },
+        { "arrow": { "stack": [ { "dir": "right", "labels": ["1. API calls", "API key"] }, { "dir": "left", "labels": ["2. Webhooks", "signature"] } ] } },
+        { "box": { "title": "Service", "sub": "runs in Docker", "color": "yellow" } } ] },
+    { "name": "layout", "type": "tree", "title": "Where the files live on the server",
+      "note": "Highlighted lines are the ones you edit.",
+      "lines": [ "/opt/acme/", "!├── docker-compose.yml     # the stack definition", "!├── .env                   # secrets, mode 600", "└── data/                  # created by the container, back this up" ] }
+  ]
+}
