@@ -26,7 +26,7 @@ from docx.shared import Inches, Pt, RGBColor
 # ---------------------------------------------------------------- themes
 # primary: title, H1, table header   secondary: H2   tertiary: H3, captions
 THEMES = {
-    "walnut": dict(primary="1A3C5E", secondary="2E75B6", tertiary="4A86C8", header_fill="BDD7EE", header_text="1A3C5E", stripe="F2F7FB", border="AAAAAA", link="1D4ED8"),
+    "navy": dict(primary="1A3C5E", secondary="2E75B6", tertiary="4A86C8", header_fill="BDD7EE", header_text="1A3C5E", stripe="F2F7FB", border="AAAAAA", link="1D4ED8"),
     "green": dict(primary="0F764A", secondary="1F272E", tertiary="475569", header_fill="0F764A", header_text="FFFFFF", stripe="F1F8F4", border="CBD5E1", link="1D4ED8"),
     "blue": dict(primary="1D4ED8", secondary="1E3A8A", tertiary="475569", header_fill="1D4ED8", header_text="FFFFFF", stripe="EFF6FF", border="CBD5E1", link="0B5FD6"),
     "purple": dict(primary="6D28D9", secondary="4C1D95", tertiary="52525B", header_fill="6D28D9", header_text="FFFFFF", stripe="F5F3FF", border="D4D4D8", link="5B21B6"),

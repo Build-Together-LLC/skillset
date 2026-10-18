@@ -32,12 +32,14 @@ line is what decides when a skill fires — edit it, not the body, if a skill tr
 | `accessibility-review` | Run a WCAG 2.1 AA accessibility audit on a design or page |
 | `bench-commands` | Frappe Bench CLI command reference for site management, app management, development, and production operations |
 | `client-scripts` | Frappe client-side JavaScript patterns for form events, field manipulation, dialogs, and UI customization |
+| `cold-emailing` | Signal-based cold outreach: find where a prospect is actively engaging right now (podcasts, LinkedIn posts, communities, events, published... |
 | `demo-doc-builder` | Build a complete, polished step-by-step demo / setup / how-to guide as a .docx from a short brief: real annotated screenshots taken from a... |
 | `design-critique` | Get structured design feedback on usability, hierarchy, and consistency |
 | `design-handoff` | Generate developer handoff specs from a design |
 | `design-system` | Audit, document, or extend your design system |
 | `diagrams-as-code` | Generate professional architecture diagrams (AWS, GCP, Azure, Kubernetes, ERPNext, network, block diagrams) as PNG images using Python code |
 | `doctype-patterns` | Frappe DocType creation patterns, field types, controller hooks, and data modeling best practices |
+| `document-builder` | Produce any formal document as a styled .docx (or Markdown) using the house format: Times New Roman 12pt justified, real Word heading styles that... |
 | `feature-to-prd` | Architect agent that transforms a preliminary feature document, presentation, or brief into a fully structured Product Requirements Document (PRD)... |
 | `frappe-api` | Frappe Python and JavaScript API reference including document operations, database queries, utilities, and REST API patterns |
 | `frappe-architect` | Turns a BRD or feature brief into a technical architecture plan for Frappe/ERPNext |
@@ -45,13 +47,16 @@ line is what decides when a skill fires — edit it, not the body, if a skill tr
 | `frappe-developer` | Implements an approved architecture plan as working Frappe/ERPNext code — DocTypes, controllers, whitelisted APIs, client scripts, ERPNext... |
 | `frappe-qa` | Tests Frappe/ERPNext code against a plan and emits a parseable PASS/FAIL verdict. Use to write and run FrappeTestCase tests, verify a feature... |
 | `frappe-review` | Review Frappe/ERPNext code changes for framework idioms, security, permission correctness, and performance |
+| `frappe-system-console` | Writes paste-ready Frappe System Console scripts (Setup → System Console) for data audits, fixes, deletions, syncs and one-off migrations on any... |
 | `frappecli` | CLI for Frappe Framework / ERPNext instances |
 | `issue-ticket-formatter` | - Convert a rough meeting transcript, brain-dump, bug note, error log, or draft PR description into a clean, professionally formatted GitHub issue... |
 | `markitdown-convert` | Converts files to Markdown using the local `markitdown` CLI tool |
 | `ontology` | Typed knowledge graph for structured agent memory and composable skills |
+| `pr-reviewer` | Reviews GitHub Pull Requests for Frappe/ERPNext (v15), Vue, React, and React Native codebases. Performs comprehensive code review covering syntax,... |
 | `print-format` | Frappe Print Format design — Jinja templates for receipts, certificates, invoices; PDF generation; page handling; multi-currency; wkhtmltopdf... |
 | `production-performance-debugger` | Production-like performance debugging and load-testing workflow for web applications, APIs, Frappe/ERPNext, single hosted VMs, Kubernetes... |
 | `react-native-patterns` | React Native / Expo patterns for Frappe-backed mobile apps. Reference for Axios API calls, React Query v4, Redux Toolkit, React Navigation,... |
+| `react-spa-patterns` | React SPA patterns for Frappe-backed applications. Reference for TanStack Query, Axios, Jotai, shadcn/ui, Tailwind, Refine v4, Mantine v5, React... |
 | `research-synthesis` | Synthesize user research into themes, insights, and recommendations |
 | `responsive-ui-walkthrough-media` | Create, fix, audit, or publish instructional walkthrough media for web/app UI, including animated GIFs, screenshots, short videos, highlighted UI... |
 | `scheduler-and-jobs` | Production-grade Frappe background jobs and scheduler — queue selection, idempotency, retries, distributed locks, monitoring stuck jobs, debugging... |
@@ -82,7 +87,9 @@ Two skills are installed from the [clawhub.ai](https://clawhub.ai) registry rath
 | `self-improvement` | `self-improving-agent` | 3.0.1 |
 
 Their `.clawhub/origin.json` and `_meta.json` are kept so provenance stays traceable. Update them
-from the registry; do not hand-edit them, or the next update will overwrite your changes.
+from the registry; do not hand-edit them, or the next update will overwrite your changes. They are
+also the only two skills here that reference the OpenClaw agent runtime — that is part of what they
+ship, not a leftover.
 
 ## Contributing
 

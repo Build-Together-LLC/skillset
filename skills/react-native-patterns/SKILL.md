@@ -9,7 +9,7 @@ Quick reference for building Expo React Native apps that integrate with a Frappe
 
 ## App Overview
 
-**Location:** `chatnext-mobile-old/`
+**Location:** the Expo project root (for example `apps/mobile/`)
 **Stack:** React Native 0.71 + Expo ~48 + React Navigation v6 + Redux Toolkit + TanStack React Query v4 + Axios
 
 ---
@@ -23,7 +23,7 @@ import apiClient from '../utils/apiClient';
 
 // POST to whitelisted method
 const res = await apiClient.post(
-  '/api/method/transporter.transporter.api.transport.create_journey',
+  '/api/method/tracking.tracking.api.transport.create_journey',
   { vehicle, route, route_stops: JSON.stringify(stops) }
 );
 const result = res.data.message; // Frappe wraps response in .message
@@ -38,19 +38,20 @@ const routes = res.data.data; // list response in .data
 ### Canonical Transport Endpoints
 
 ```
-# Always use transporter app — NEVER edu_quality.api.transport.*
-POST /api/method/transporter.transporter.api.transport.create_journey
-POST /api/method/transporter.transporter.api.transport.add_gps_log
-POST /api/method/transporter.transporter.api.transport.end_journey_api
-GET  /api/method/transporter.transporter.api.transport.get_active_journey
-POST /api/method/transporter.transporter.api.transport.cleanup_room_silent
+# Call the dedicated service app's namespace, never a legacy monolith's copy of it.
+# Pin the canonical list here so nobody reintroduces a deprecated path.
+POST /api/method/tracking.tracking.api.transport.create_journey
+POST /api/method/tracking.tracking.api.transport.add_gps_log
+POST /api/method/tracking.tracking.api.transport.end_journey_api
+GET  /api/method/tracking.tracking.api.transport.get_active_journey
+POST /api/method/tracking.tracking.api.transport.cleanup_room_silent
 
 # Attendance
-POST /api/method/edu_quality.edu_quality.server_scripts.student.mark_entry
+POST /api/method/my_app.my_app.server_scripts.student.mark_entry
 
 # Routes
-GET  /api/method/edu_quality.api.route_list.get_route_list_with_stops
-GET  /api/method/edu_quality.api.route_list.get_route_student_attendance
+GET  /api/method/my_app.api.route_list.get_route_list_with_stops
+GET  /api/method/my_app.api.route_list.get_route_student_attendance
 ```
 
 ---
@@ -207,7 +208,7 @@ End Journey
 const reason = `${isPickup ? 'Pickup' : 'Drop'} - Double-tap onboard`;
 
 await apiClient.post(
-  '/api/method/edu_quality.edu_quality.server_scripts.student.mark_entry',
+  '/api/method/my_app.my_app.server_scripts.student.mark_entry',
   {
     student: studentId,
     status: isPickup ? 'Present' : 'Present',
@@ -261,7 +262,7 @@ Notifications.setNotificationHandler({
 ## Build Commands
 
 ```bash
-cd chatnext-mobile-old
+cd apps/mobile                   # the Expo project root
 
 npx expo start --dev-client      # Dev with custom native modules
 npx expo run:android             # Debug APK on connected device

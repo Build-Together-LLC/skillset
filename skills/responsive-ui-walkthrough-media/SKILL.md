@@ -87,10 +87,12 @@ Use `scripts/qc_walkthrough_media.py` to create a local QC folder with:
 - optional GIF contact sheets using ffmpeg
 - a small JSON summary of generated files
 
-Example:
+Example (`SKILL_DIR` is this skill's own directory, wherever it is installed):
 
 ```bash
-python3 /home/nkarkare-1/.openclaw/skills/responsive-ui-walkthrough-media/scripts/qc_walkthrough_media.py \
+SKILL_DIR=$(dirname "$(find ~/.claude/skills .claude/skills -name SKILL.md -path '*responsive-ui-walkthrough-media*' 2>/dev/null | head -1)")
+
+python3 "$SKILL_DIR/scripts/qc_walkthrough_media.py" \
   --url https://example.com/tutorial \
   --gif path/to/walkthrough.gif \
   --out /tmp/tutorial-qc

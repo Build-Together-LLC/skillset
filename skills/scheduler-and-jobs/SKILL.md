@@ -70,23 +70,23 @@ class SalesInvoice(Document):
 The team convention is to prefer `cron:` over the named keys (`hourly`, `daily`, `weekly`, `monthly`) — explicit cron expressions are more obvious to read and grep for. The named keys are still fine for "I genuinely want this every hour" but `cron` is preferred when the cadence is anything else or when you want to see the schedule at a glance.
 
 ```python
-# hooks.py — pattern from edu_quality
+# hooks.py
 scheduler_events = {
     "all": [
-        "edu_quality.api.student_application.get_and_schedule_pending_walkouts",
-        "edu_quality.overrides_hooks.item.upload_all_imported_to_drive",
+        "my_app.api.application.schedule_pending_followups",
+        "my_app.overrides_hooks.item.upload_imported_files_to_drive",
     ],
     "cron": {
-        "0 * * * *":    ["edu_quality.tasks.cron"],
-        "0 19 * * *":   ["edu_quality.tasks.send_bulk_notification_cmap_to_guardian"],
-        "0 1 * * *":    ["edu_quality.edu_quality.scheduled_tasks.assessment_pdf_scheduler.attach_daily_assessment_pdfs"],
+        "0 * * * *":    ["my_app.tasks.hourly"],
+        "0 19 * * *":   ["my_app.tasks.send_bulk_notification_to_contacts"],
+        "0 1 * * *":    ["my_app.my_app.scheduled_tasks.report_scheduler.attach_daily_report_pdfs"],
         "0 6 * * *":    [
-            "edu_quality.tasks.schedule_birthday_greeting",
-            "edu_quality.tasks.event_reminder",
+            "my_app.tasks.schedule_anniversary_greeting",
+            "my_app.tasks.event_reminder",
         ],
         "* * * * *":    [
-            "edu_quality.cmap_jobs.send_ptm_notifications_to_students",
-            "edu_quality.cmap_jobs.notify_teacher_before_one_hour_job",
+            "my_app.reminder_jobs.send_meeting_notifications",
+            "my_app.reminder_jobs.notify_owner_one_hour_before",
         ],
     },
 }

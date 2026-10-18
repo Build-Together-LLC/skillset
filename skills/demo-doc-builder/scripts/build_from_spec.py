@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Build a .docx from a JSON spec using demodoc.
 
-    build_from_spec.py spec.json out.docx [--theme green|walnut|blue|purple|orange|teal|slate]
+    build_from_spec.py spec.json out.docx [--theme green|navy|blue|purple|orange|teal|slate]
 
 Spec keys: theme, page (A4|Letter), footer, title, author, cover{title,subtitle,rows,note},
 contents[[part, what]], blocks[...]. Block types (all text supports **bold**, *italic*, `code`,

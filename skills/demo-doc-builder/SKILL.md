@@ -62,7 +62,7 @@ Use `templates/brief.md`. If the user gave a brief, extract the fields; ask **at
 only for what you truly cannot infer. Defaults: theme `green`, A4, demo data, save to `./docs/<topic>/`,
 cover the local **and** the server path.
 
-Offer the themes by name: `green` `walnut` (house navy/blue) `blue` `purple` `orange` `teal` `slate`.
+Offer the themes by name: `green` `navy` (deep navy/blue) `blue` `purple` `orange` `teal` `slate`.
 
 ## Step 1. Environment
 

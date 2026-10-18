@@ -18,7 +18,7 @@ const path = require('path');
 const home = process.env.DEMO_DOC_HOME || path.join(process.env.HOME, '.cache', 'demo-doc-builder');
 const { chromium } = require(path.join(home, 'node_modules', 'playwright-core'));
 
-const ACCENT = { walnut: '#2E75B6', green: '#0F764A', blue: '#1D4ED8', purple: '#6D28D9', orange: '#C2410C', teal: '#0F766E', slate: '#334155' };
+const ACCENT = { navy: '#2E75B6', green: '#0F764A', blue: '#1D4ED8', purple: '#6D28D9', orange: '#C2410C', teal: '#0F766E', slate: '#334155' };
 const BOX = {
   neutral: ['#F8FAFC', '#334155'], green: ['#ECFDF5', '#16A34A'], blue: ['#EFF6FF', '#2563EB'],
   yellow: ['#FFFBEB', '#D97706'], purple: ['#F5F3FF', '#7C3AED'], red: ['#FEF2F2', '#DC2626'],

@@ -5,7 +5,7 @@ description: Frappe Workflow design — multi-state document lifecycles, role-ba
 
 # Frappe Workflow Patterns
 
-Reference for designing Frappe workflows, aligned with the team's edu_quality conventions: `workflow_state` added via Custom Field in the customizations sub-app (not source DocType edits), pragmatic use of `db_set` over `apply_workflow` for programmatic transitions, and willingness to build a custom DocType + Page when stock Workflow doesn't fit.
+Reference for designing Frappe workflows, aligned with these conventions: `workflow_state` added via Custom Field in the customizations sub-app (not source DocType edits), pragmatic use of `db_set` over `apply_workflow` for programmatic transitions, and willingness to build a custom DocType + Page when stock Workflow doesn't fit.
 
 ## Team conventions
 
@@ -151,14 +151,14 @@ There are two ways to move a doc between states programmatically. The team predo
 ### `db_set` (team default)
 
 ```python
-# refund_request.py — pattern from edu_quality
+# refund_request.py
 bank_account.save(ignore_permissions=True)
 if hasattr(bank_account, "workflow_state"):
     bank_account.db_set("workflow_state", "Approved")
 ```
 
 ```python
-# scan_receipts.py — pattern from edu_quality
+# scan_receipts.py
 receipt_doc.workflow_state = "Received"
 receipt_doc.save(ignore_permissions=True)
 ```
@@ -266,10 +266,10 @@ class ExpenseClaim(Document):
 
 ## Custom workflow DocTypes
 
-When stock Workflow doesn't fit, build a custom DocType for the state machine itself. Precedent in edu_quality:
+When stock Workflow doesn't fit, build a custom DocType for the state machine itself. A worked precedent:
 
 - **`Funnel Workflow`** — tracks the multi-step student application funnel (`Inquiry → Application → Interview → Offer → Enrollment`). Each row is one applicant's funnel state, with custom fields for stage timestamps and reasons.
-- **`fee_workflow` Page** (`edu_quality/page/fee_workflow/`) — Frappe Page (not a DocType) providing a custom UI for fee operations that span multiple DocTypes.
+- **`fee_workflow` Page** (`my_app/page/fee_workflow/`) — Frappe Page (not a DocType) providing a custom UI for fee operations that span multiple DocTypes.
 
 When to reach for this:
 - Workflow involves multiple linked documents.

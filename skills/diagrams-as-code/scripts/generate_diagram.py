@@ -8,11 +8,12 @@ Types: aws-webapp, erpnext, kafka-pipeline, microservices
 import sys
 import os
 
-os.makedirs("/home/frappe/.openclaw/workspace/diagrams", exist_ok=True)
+OUT_DIR = os.environ.get("DIAGRAM_OUT_DIR", os.path.join(os.getcwd(), "diagrams"))
+os.makedirs(OUT_DIR, exist_ok=True)
 
 diagram_type = sys.argv[1] if len(sys.argv) > 1 else "aws-webapp"
 output_name = sys.argv[2] if len(sys.argv) > 2 else diagram_type
-output_path = f"/home/frappe/.openclaw/workspace/diagrams/{output_name}"
+output_path = os.path.join(OUT_DIR, output_name)
 
 
 def aws_webapp():

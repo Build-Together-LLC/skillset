@@ -5,7 +5,7 @@ description: Frappe Print Format design — Jinja templates for receipts, certif
 
 # Frappe Print Format Reference
 
-Reference for designing Print Formats in Frappe v14+, aligned with the team's edu_quality conventions: **self-contained formats** (no `letter_head` / `footer` injection), `wkhtmltopdf` pinned as the PDF engine, `dd-MM-yyyy` date format, and `Rs.` instead of `₹` to dodge font issues.
+Reference for designing Print Formats in Frappe v14+, aligned with these conventions: **self-contained formats** (no `letter_head` / `footer` injection), `wkhtmltopdf` pinned as the PDF engine, `dd-MM-yyyy` date format, and `Rs.` instead of `₹` to dodge font issues.
 
 ## Team conventions
 
@@ -274,7 +274,7 @@ The Print Format DocType row should still exist with `print_format_type: "Server
 - **Print Format Builder format keeps reverting on migrate** — DB row is being re-imported from fixtures every migration. Pick one source of truth: either committed fixture or hand-edited DB.
 - **`format_data` JSON has stale field references after a DocType change** — the Builder embeds field names; rename a field and the format breaks silently. Check after any DocType edit.
 
-## Example: fee receipt (matches edu_quality style)
+## Example: fee receipt
 
 ```html
 {# fees/print_format/fee_receipt/fee_receipt.html — embedded in the JSON's `html` field #}

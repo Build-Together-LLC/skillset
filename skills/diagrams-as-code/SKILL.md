@@ -15,7 +15,7 @@ Generate architecture diagrams using the Python `diagrams` library. Output is a 
 
 1. Write a Python script using the diagrams library
 2. Run it with `python3 script.py`
-3. Output PNG is saved to `/home/frappe/.openclaw/workspace/diagrams/`
+3. Output PNG is saved to `$DIAGRAM_OUT_DIR` (default: `./diagrams/` under the current directory)
 4. Share the image with the user via the `message` tool
 
 ## Quick Reference
@@ -56,7 +56,7 @@ from diagrams.saas.chat import Slack
 from diagrams import Diagram, Cluster, Edge
 # import required nodes
 
-output_path = "/home/frappe/.openclaw/workspace/diagrams/diagram_name"
+output_path = os.path.join(OUT_DIR, "diagram_name")  # OUT_DIR from $DIAGRAM_OUT_DIR, default ./diagrams
 
 with Diagram("Title", filename=output_path, show=False, direction="LR"):
     # direction: LR (left-right), TB (top-bottom), RL, BT
@@ -92,7 +92,7 @@ from diagrams.programming.framework import Django, React
 
 ## Output
 
-Always save to `/home/frappe/.openclaw/workspace/diagrams/` (create dir if needed).
+Always save under `$DIAGRAM_OUT_DIR` (default `./diagrams/`), creating the directory if needed. Never hardcode an absolute path — the skill has to run on any machine.
 Always set `show=False` to prevent GUI popup.
 After generating, use `message` tool with `media` or `filePath` to send the PNG to the user.
 
