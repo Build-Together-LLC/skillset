@@ -47,6 +47,7 @@ line is what decides when a skill fires — edit it, not the body, if a skill tr
 | `frappe-developer` | Implements an approved architecture plan as working Frappe/ERPNext code — DocTypes, controllers, whitelisted APIs, client scripts, ERPNext... |
 | `frappe-qa` | Tests Frappe/ERPNext code against a plan and emits a parseable PASS/FAIL verdict. Use to write and run FrappeTestCase tests, verify a feature... |
 | `frappe-review` | Review Frappe/ERPNext code changes for framework idioms, security, permission correctness, and performance |
+| `frappe-solutioning` | Use BEFORE designing or building any new Frappe/ERPNext feature, DocType, workflow or API. Searches the bench — upstream apps and custom apps... |
 | `frappe-system-console` | Writes paste-ready Frappe System Console scripts (Setup → System Console) for data audits, fixes, deletions, syncs and one-off migrations on any... |
 | `frappecli` | CLI for Frappe Framework / ERPNext instances |
 | `issue-ticket-formatter` | - Convert a rough meeting transcript, brain-dump, bug note, error log, or draft PR description into a clean, professionally formatted GitHub issue... |
@@ -55,6 +56,7 @@ line is what decides when a skill fires — edit it, not the body, if a skill tr
 | `pr-reviewer` | Reviews GitHub Pull Requests for Frappe/ERPNext (v15), Vue, React, and React Native codebases. Performs comprehensive code review covering syntax,... |
 | `print-format` | Frappe Print Format design — Jinja templates for receipts, certificates, invoices; PDF generation; page handling; multi-currency; wkhtmltopdf... |
 | `production-performance-debugger` | Production-like performance debugging and load-testing workflow for web applications, APIs, Frappe/ERPNext, single hosted VMs, Kubernetes... |
+| `proposal-builder` | Produce a Build Together client implementation proposal as a styled .docx — the ERPNext / Frappe (or any custom-software) sales proposal with... |
 | `react-native-patterns` | React Native / Expo patterns for Frappe-backed mobile apps. Reference for Axios API calls, React Query v4, Redux Toolkit, React Navigation,... |
 | `react-spa-patterns` | React SPA patterns for Frappe-backed applications. Reference for TanStack Query, Axios, Jotai, shadcn/ui, Tailwind, Refine v4, Mantine v5, React... |
 | `research-synthesis` | Synthesize user research into themes, insights, and recommendations |
@@ -90,6 +92,14 @@ Their `.clawhub/origin.json` and `_meta.json` are kept so provenance stays trace
 from the registry; do not hand-edit them, or the next update will overwrite your changes. They are
 also the only two skills here that reference the OpenClaw agent runtime — that is part of what they
 ship, not a leftover.
+
+## What is deliberately not here
+
+Skills bound to one tenant's sites, repos or infrastructure stay with that tenant, per the rule
+above. At the time of writing that means deployment-comparison tooling wired to specific client
+sites, and dependency/symbol-graph skills that read a pre-computed index built by a cron on one
+particular bench. If you need one of those, generalise it first: move the per-product config into
+a file the skill reads, rather than hardcoding it.
 
 ## Contributing
 

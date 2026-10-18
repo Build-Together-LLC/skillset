@@ -87,6 +87,84 @@ def _set_run(run, size=12, bold=False, italic=False, color="000000", font=FONT):
     return run
 
 
+class Link:
+    """A (text, url) hyperlink token. Pass anywhere body/bullet/table text is accepted,
+    on its own or inside a list of parts, e.g.
+        d.body(["Shipped via ", Link("#154", pr_url("my-org/my-repo", 154)), "."])
+        d.table(headers, [[change, Link("#154", url), ...]])
+    """
+
+    __slots__ = ("text", "url")
+
+    def __init__(self, text, url):
+        self.text = str(text)
+        self.url = str(url)
+
+
+def link(text, url):
+    return Link(text, url)
+
+
+# Convenience URL builders for the deployment skills (repo = "owner/name").
+def pr_url(repo, n):
+    return f"https://github.com/{repo}/pull/{n}"
+
+
+def commit_url(repo, sha):
+    return f"https://github.com/{repo}/commit/{sha}"
+
+
+def issue_url(repo, n):
+    return f"https://github.com/{repo}/issues/{n}"
+
+
+def jira_url(key, base="https://buildtogether.atlassian.net"):
+    """Browse URL for a Jira issue key like 'VE-271' (works for any project key)."""
+    return f"{base.rstrip('/')}/browse/{key}"
+
+
+def _add_hyperlink(paragraph, url, text, size=12, color="2E75B6", bold=False, italic=False):
+    """Append a real external hyperlink run (underlined, coloured) to a paragraph."""
+    r_id = paragraph.part.relate_to(
+        url,
+        "http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink",
+        is_external=True,
+    )
+    hl = OxmlElement("w:hyperlink")
+    hl.set(qn("r:id"), r_id)
+    run = OxmlElement("w:r")
+    rPr = OxmlElement("w:rPr")
+    rPr.append(parse_xml(
+        f'<w:rFonts {nsdecls("w")} w:ascii="{FONT}" w:hAnsi="{FONT}" w:eastAsia="{FONT}" w:cs="{FONT}"/>'
+    ))
+    sz = OxmlElement("w:sz"); sz.set(qn("w:val"), str(int(size * 2))); rPr.append(sz)
+    col = OxmlElement("w:color"); col.set(qn("w:val"), PALETTE.get(color, color)); rPr.append(col)
+    if bold:
+        rPr.append(OxmlElement("w:b"))
+    if italic:
+        rPr.append(OxmlElement("w:i"))
+    u = OxmlElement("w:u"); u.set(qn("w:val"), "single"); rPr.append(u)
+    run.append(rPr)
+    t = OxmlElement("w:t"); t.set(qn("xml:space"), "preserve"); t.text = text
+    run.append(t)
+    hl.append(run)
+    paragraph._p.append(hl)
+    return hl
+
+
+def _render_parts(paragraph, value, size=12, bold=False, italic=False, color="000000"):
+    """Render str | Link | list[str|Link] into `paragraph`, hyperlinking any Link parts.
+    Plain strings keep the given run styling; Links render as underlined hyperlinks."""
+    parts = value if isinstance(value, (list, tuple)) else [value]
+    for part in parts:
+        if isinstance(part, Link):
+            _add_hyperlink(paragraph, part.url, part.text, size=size, bold=bold, italic=italic)
+        else:
+            _set_run(paragraph.add_run("" if part is None else str(part)),
+                     size=size, bold=bold, italic=italic, color=color)
+    return paragraph
+
+
 class DocBuilder:
     """Styled .docx builder. Tables auto-number as `Table <section>.<n>`."""
 
@@ -223,14 +301,14 @@ class DocBuilder:
             "right": WD_ALIGN_PARAGRAPH.RIGHT,
         }[align]
         p.paragraph_format.line_spacing = 1.15
-        _set_run(p.add_run(text), size=size, bold=bold, italic=italic, color=color)
+        _render_parts(p, text, size=size, bold=bold, italic=italic, color=color)
         return p
 
     def bullet(self, text, level=0, bold=False):
         p = self.doc.add_paragraph(style="List Bullet" if level == 0 else "List Bullet 2")
         p.alignment = WD_ALIGN_PARAGRAPH.JUSTIFY
         p.paragraph_format.line_spacing = 1.15
-        _set_run(p.add_run(text), size=12, bold=bold)
+        _render_parts(p, text, size=12, bold=bold)
         return p
 
     def numbered(self, text, level=0):
@@ -292,8 +370,7 @@ class DocBuilder:
             for c, val in enumerate(row):
                 cell = t.rows[r + 1].cells[c]
                 cell.text = ""
-                _set_run(cell.paragraphs[0].add_run("" if val is None else str(val)),
-                         size=11, color="bodygrey")
+                _render_parts(cell.paragraphs[0], val, size=11, color="bodygrey")
                 if alt_rows and r % 2 == 1:
                     _shade(cell._element.get_or_add_tcPr(), PALETTE["altrow"])
 

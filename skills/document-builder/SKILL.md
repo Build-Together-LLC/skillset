@@ -186,6 +186,39 @@ d.save("docs/Salary_Slip_Runbook_20260724.docx")
 
 ---
 
+## Hyperlinks
+
+`Link(text, url)` renders as real Word hyperlink field, not blue text. It works anywhere a string
+does — body text, bullets, table cells, and `meta` values — and a list mixes links with plain runs.
+
+```python
+from docbuilder import DocBuilder, Link, pr_url, commit_url, issue_url, jira_url
+
+REPO = "my-org/my-repo"
+
+d.table(["Ref", "Change", "Jira"],
+        [[Link("#234", pr_url(REPO, 234)),
+          "Warehouse batch pricing removed",
+          Link("ABC-270", jira_url("ABC-270"))],
+         [Link("abc1234", commit_url(REPO, "abc1234")), "Direct commit", "—"]])
+
+d.body([Link("github.com/" + REPO, "https://github.com/" + REPO), "  —  prod → develop"])
+```
+
+The four URL helpers are conveniences, nothing more — `pr_url`, `commit_url`, `issue_url` take a
+`owner/repo` string, and `jira_url(key, base=...)` takes your Jira base URL. Pass any URL to `Link`
+directly when they do not fit.
+
+Verify after saving — a document that should have links and has none means `Link` was stringified
+somewhere:
+
+```python
+import docx
+from docx.oxml.ns import qn
+doc = docx.Document(PATH)
+print("hyperlinks:", len(doc.element.body.findall('.//' + qn('w:hyperlink'))))
+```
+
 ## Output rules
 
 - Filename: `<Doc_Type>_<Subject>_<YYYYMMDD>.docx`, underscores not spaces.
