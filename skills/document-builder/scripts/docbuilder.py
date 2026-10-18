@@ -1,5 +1,6 @@
 """
-docbuilder.py — standard .docx builder.
+docbuilder.py — standard .docx builder.import os
+
 
 One import gives you the house style used by every document from this skill:
 Times New Roman throughout, 12pt justified body, real Word Heading styles
@@ -29,6 +30,8 @@ Usage
 Every helper forces the font on the run itself — python-docx loses style
 inheritance on headings and table cells, so never rely on the style alone.
 """
+
+import os
 
 from docx import Document
 from docx.shared import Pt, Emu, RGBColor
@@ -118,9 +121,16 @@ def issue_url(repo, n):
     return f"https://github.com/{repo}/issues/{n}"
 
 
-def jira_url(key, base="https://buildtogether.atlassian.net"):
-    """Browse URL for a Jira issue key like 'VE-271' (works for any project key)."""
-    return f"{base.rstrip('/')}/browse/{key}"
+def jira_url(key, base=None):
+    """Browse URL for a Jira issue key like 'PROJ-271' (works for any project key).
+
+    Pass base=, or set JIRA_BASE_URL. There is no default: a hardcoded Jira site would
+    silently produce dead links in someone else's document.
+    """
+    site = (base or os.environ.get("JIRA_BASE_URL", "")).rstrip("/")
+    if not site:
+        raise RuntimeError("jira_url needs base= or JIRA_BASE_URL (e.g. https://your-site.atlassian.net)")
+    return f"{site}/browse/{key}"
 
 
 def _add_hyperlink(paragraph, url, text, size=12, color="2E75B6", bold=False, italic=False):

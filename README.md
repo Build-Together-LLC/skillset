@@ -34,6 +34,7 @@ line is what decides when a skill fires — edit it, not the body, if a skill tr
 | `client-scripts` | Frappe client-side JavaScript patterns for form events, field manipulation, dialogs, and UI customization |
 | `cold-emailing` | Signal-based cold outreach: find where a prospect is actively engaging right now (podcasts, LinkedIn posts, communities, events, published... |
 | `demo-doc-builder` | Build a complete, polished step-by-step demo / setup / how-to guide as a .docx from a short brief: real annotated screenshots taken from a... |
+| `deploy-notes-comparison` | Release tooling for a product deployed from git — most at home on Frappe/ERPNext, but nothing in it is Frappe-specific. It drives a THREE-STAGE... |
 | `design-critique` | Get structured design feedback on usability, hierarchy, and consistency |
 | `design-handoff` | Generate developer handoff specs from a design |
 | `design-system` | Audit, document, or extend your design system |
@@ -96,10 +97,14 @@ ship, not a leftover.
 ## What is deliberately not here
 
 Skills bound to one tenant's sites, repos or infrastructure stay with that tenant, per the rule
-above. At the time of writing that means deployment-comparison tooling wired to specific client
-sites, and dependency/symbol-graph skills that read a pre-computed index built by a cron on one
-particular bench. If you need one of those, generalise it first: move the per-product config into
-a file the skill reads, rather than hardcoding it.
+above. At the time of writing that means the dependency and symbol-graph skills, which read a
+pre-computed index built by a cron on one particular bench rather than from the repo they ship in.
+
+`deploy-notes-comparison` was in that category and was generalised instead: every product-specific
+value — repos, branches, docs folders, tracker schemas, ticket bases, gh account — moved into a
+per-project config file the skill reads, and the original two-product config is kept verbatim as
+`references/products.example.md`. That is the pattern to follow for anything else bound to one
+tenant: move the config out, keep the method.
 
 ## Contributing
 

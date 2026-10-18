@@ -205,9 +205,10 @@ d.table(["Ref", "Change", "Jira"],
 d.body([Link("github.com/" + REPO, "https://github.com/" + REPO), "  —  prod → develop"])
 ```
 
-The four URL helpers are conveniences, nothing more — `pr_url`, `commit_url`, `issue_url` take a
-`owner/repo` string, and `jira_url(key, base=...)` takes your Jira base URL. Pass any URL to `Link`
-directly when they do not fit.
+The four URL helpers are conveniences, nothing more — `pr_url`, `commit_url`, `issue_url` take an
+`owner/repo` string. `jira_url(key)` reads `JIRA_BASE_URL` from the environment, or takes `base=`;
+it raises rather than default to anyone's Jira site, because a wrong base produces links that look
+right and go nowhere. Pass any URL to `Link` directly when the helpers do not fit.
 
 Verify after saving — a document that should have links and has none means `Link` was stringified
 somewhere:
