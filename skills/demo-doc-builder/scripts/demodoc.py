@@ -439,6 +439,9 @@ def table(rows, widths=None, header=True, font=None, caption=None, label=None):
             elif i % 2 == 0:
                 _shade(c, th["stripe"])
     if widths:
+        t.autofit = False
+        for col, w in zip(t.columns, widths):
+            col.width = Inches(w)          # LibreOffice reads the column grid, Word reads the cell widths: set both
         for row in t.rows:
             for j, w in enumerate(widths):
                 row.cells[j].width = Inches(w)
@@ -447,8 +450,19 @@ def table(rows, widths=None, header=True, font=None, caption=None, label=None):
     return t
 
 
-def img(path, caption=None, width=6.3, label=None):
-    """Picture with an auto-numbered 'Figure n.' caption. Use {fig:label} in text to refer to it."""
+def fit(path, w_max, h_max):
+    """The widest size in inches, up to w_max, that keeps the picture no taller than h_max inches."""
+    from PIL import Image
+    w, h = Image.open(path).size
+    return round(min(w_max, h_max * w / h), 2)
+
+
+def img(path, caption=None, width=6.3, label=None, max_h=None):
+    """Picture with an auto-numbered 'Figure n.' caption. Use {fig:label} in text to refer to it.
+
+    max_h (inches) keeps a tall screenshot from spilling over the page: the width shrinks to fit that height.
+    """
+    width = fit(path, width, max_h) if max_h else width
     width = min(width, S["width"])
     par = S["doc"].add_paragraph()
     par.alignment = WD_ALIGN_PARAGRAPH.CENTER
@@ -463,6 +477,31 @@ def img(path, caption=None, width=6.3, label=None):
         cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
         cap.paragraph_format.space_after = Pt(10)
         rich(cap, f"*Figure {S['fig_n']}. {caption}*", size=10.5, color=_t()["tertiary"])
+
+
+def figrow(paths, caption, each_w, label=None):
+    """Several pictures side by side (phone screens, small emails) under one numbered caption."""
+    t = S["doc"].add_table(rows=1, cols=len(paths))
+    borders = OxmlElement("w:tblBorders")
+    for edge in ("top", "left", "bottom", "right", "insideH", "insideV"):
+        e = OxmlElement(f"w:{edge}")
+        e.set(qn("w:val"), "nil")
+        borders.append(e)
+    t._tbl.tblPr.append(borders)
+    t.alignment = WD_TABLE_ALIGNMENT.CENTER
+    t.autofit = False
+    slot = S["width"] / len(paths)
+    for col, cell, path in zip(t.columns, t.rows[0].cells, paths):
+        col.width = cell.width = Inches(slot)
+        cell.paragraphs[0].alignment = WD_ALIGN_PARAGRAPH.CENTER
+        cell.paragraphs[0].add_run().add_picture(path, width=Inches(each_w))
+    S["fig_n"] += 1
+    if label:
+        S["figs"][label] = S["fig_n"]
+    cap = S["doc"].add_paragraph()
+    cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    cap.paragraph_format.space_after = Pt(10)
+    rich(cap, f"*Figure {S['fig_n']}. {caption}*", size=10.5, color=_t()["tertiary"])
 
 
 def pagebreak():

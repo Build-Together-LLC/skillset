@@ -12,7 +12,10 @@ boxes, badges and fonts are scaled up so the marks look the same size):
                         {"arrow": [x1,y1,x2,y2]},
                         {"text":  [x, y, "label"]},
                         {"pixelate": [x1,y1,x2,y2, "QR hidden"]},
-                        {"blur": [x1,y1,x2,y2]} ] } ] }
+                        {"blur": [x1,y1,x2,y2]},
+                        {"box": ["01_settings", 1]},            # rectangle + badge on a target recorded by screenshots.js
+                        {"box": ["01_settings", 2, "Save"]} ] } ] }
+(plan.json may also have "boxes": "shots/boxes.json" when that file is not next to the plan.)
 
 Always pixelate QR codes, tokens, e-mail addresses and anything personal before a screenshot is used.
 """
@@ -60,6 +63,19 @@ def blur(im, box, radius=14):
     im.paste(im.crop(box).filter(ImageFilter.GaussianBlur(radius)), box)
 
 
+def resolve_boxes(ops, boxes):
+    """Turn {"box": [shot, n]} into the rectangle and numbered badge for that recorded target."""
+    out = []
+    for op in ops:
+        if "box" not in op:
+            out.append(op)
+            continue
+        shot, n = op["box"][0], op["box"][1]
+        rect = boxes[shot][str(n)]
+        out += [{"rect": rect}, {"badge": [n, rect[0], rect[1]]}]
+    return out
+
+
 def annotate(src, out, ops, color="#DC2626", scale=1):
     col = rgb(color)
     im = Image.open(src).convert("RGB")
@@ -102,10 +118,13 @@ def annotate(src, out, ops, color="#DC2626", scale=1):
 def main(plan_path):
     plan = json.load(open(plan_path))
     base = os.path.dirname(os.path.abspath(plan_path))
+    boxes_path = plan.get("boxes") or os.path.join(base, "boxes.json")
+    boxes = json.load(open(boxes_path if os.path.isabs(boxes_path) else os.path.join(base, boxes_path))) if os.path.exists(boxes_path if os.path.isabs(boxes_path) else os.path.join(base, boxes_path)) else {}
     for item in plan["items"]:
         src = item["src"] if os.path.isabs(item["src"]) else os.path.join(base, item["src"])
         out = item["out"] if os.path.isabs(item["out"]) else os.path.join(base, item["out"])
-        print("annotated", annotate(src, out, item.get("ops", []), plan.get("color", "#DC2626"), item.get("scale", plan.get("scale", 1))))
+        ops = resolve_boxes(item.get("ops", []), boxes)
+        print("annotated", annotate(src, out, ops, plan.get("color", "#DC2626"), item.get("scale", plan.get("scale", 1))))
 
 
 if __name__ == "__main__":

@@ -10,6 +10,8 @@ a few lines of speaker text, no setup instructions.
     s.split("02_picker.png", [("1", "**Warehouse** is required."), ("2", "**Supplier** is optional.")], image_w=5.8)
     s.slide("2  Two views")
     s.pair("a.png", "b.png", "**User A** sees ...", "**User B** sees ...")
+    s.alone("diagram.png", 9.4)                       # one centred picture
+    s.quad(["1.png", "2.png", "3.png"], ["**1** ...", "**2** ...", "**3** ..."], width=2.3)   # steps or phone screens
     s.say("Introduce the safety net before the first click.")
     s.save("demo.docx")
 
@@ -85,8 +87,15 @@ def _gap():
     d.S["doc"].add_paragraph().paragraph_format.space_after = 0
 
 
+MAX_PICTURE_H = 5.25
+
+
 def split(image, items, image_w=5.6, heading=None, crop=None):
-    """Picture on the left, numbered speaker points on the right. items = [("1", "text"), ...]."""
+    """Picture on the left, numbered speaker points on the right. items = [("1", "text"), ...].
+
+    The width shrinks when the picture is tall, so the slide stays on one page.
+    """
+    image_w = d.fit(_prepared(image, crop), image_w, MAX_PICTURE_H)
     table = d.S["doc"].add_table(rows=1, cols=2)
     _no_borders(table)
     left_w, right_w = image_w + 0.15, SLIDE_W - image_w - 0.3
@@ -117,6 +126,27 @@ def pair(left_image, right_image, left_caption, right_caption, width=5.05, right
     _gap()
 
 
+def alone(image, width):
+    """One picture centred on the slide, for a diagram or a wide screenshot."""
+    paragraph = d.S["doc"].add_paragraph()
+    paragraph.alignment = 1
+    paragraph.paragraph_format.space_after = Pt(2)
+    paragraph.add_run().add_picture(image, width=Inches(width))
+
+
+def quad(images, captions, width=2.4):
+    """A row of pictures (phone screens, steps), each with its own caption underneath."""
+    table = d.S["doc"].add_table(rows=2, cols=len(images))
+    _no_borders(table)
+    _widths(table, [SLIDE_W / len(images)] * len(images))
+    for index, (image, caption) in enumerate(zip(images, captions)):
+        top, bottom = table.rows[0].cells[index], table.rows[1].cells[index]
+        top.paragraphs[0].alignment = bottom.paragraphs[0].alignment = 1
+        top.paragraphs[0].add_run().add_picture(image, width=Inches(width))
+        d.rich(bottom.paragraphs[0], caption, size=11)
+    _gap()
+
+
 def _theme_name():
     theme = d.S["theme"]
     for name, value in d.THEMES.items():
@@ -126,6 +156,7 @@ def _theme_name():
 
 
 cover = d.cover
+fit = d.fit
 table = d.table
 img = d.img
 bullets = d.bullets

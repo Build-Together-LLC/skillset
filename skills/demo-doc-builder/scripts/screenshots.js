@@ -10,7 +10,12 @@
 //                 "agent":   {"login": {...}} },
 //   "shots": [ { "name":"01_settings", "url":"/app/settings", "wait":3000, "context":"default",
 //                "steps":[ {"click":"text=Save"}, {"fill":["#name","Sales"]}, {"hover":".icon"}, {"press":"Escape"},
-//                          {"wait":800}, {"scroll":".section"}, {"eval":"document.title"} ], "fullPage":false } ] }
+//                          {"wait":800}, {"scroll":".section"}, {"select":["#mode","Online"]}, {"eval":"document.title"} ],
+//                "fullPage":false, "element":".card", "clip":[0,0,800,600],
+//                "targets":[ {"n":1,"sel":"[data-fieldname=email]"} ] } ] }
+//   steps: select takes [selector, value or label]. element shoots one element only. clip is [x, y, width, height] in CSS px.
+//   targets records the CSS-pixel box of each selector to <outDir>/boxes.json, so annotate.py can draw rectangles and badges
+//   on the right fields without guessing coordinates: {"box": ["01_settings", 1]} in an annotate plan (see annotate.py).
 //
 // Use throwaway/demo data. Never screenshot real customers, tokens or personal numbers.
 const fs = require('fs');
@@ -40,6 +45,8 @@ async function login(page, base, spec) {
   const browser = await chromium.launch({ executablePath: browserPath(), args: ['--no-sandbox'] });
   const pages = {};
   const problems = [];
+  const boxesFile = path.join(outDir, 'boxes.json');
+  const boxes = fs.existsSync(boxesFile) ? JSON.parse(fs.readFileSync(boxesFile, 'utf8')) : {};
   const contextFor = async (name) => {
     if (pages[name]) return pages[name];
     const ctx = await browser.newContext({ viewport: plan.viewport || { width: 1360, height: 780 }, deviceScaleFactor: plan.scale || 1 });
@@ -64,6 +71,7 @@ async function login(page, base, spec) {
     for (const step of shot.steps || []) {
       if (step.click) await page.locator(step.click).first().click();
       else if (step.fill) await page.fill(step.fill[0], step.fill[1]);
+      else if (step.select) await page.selectOption(step.select[0], step.select[1]);
       else if (step.hover) await page.locator(step.hover).first().hover();
       else if (step.press) await page.keyboard.press(step.press);
       else if (step.scroll) await page.locator(step.scroll).first().scrollIntoViewIfNeeded();
@@ -72,9 +80,27 @@ async function login(page, base, spec) {
       await page.waitForTimeout(step.wait ?? 600);
     }
     const file = path.join(outDir, shot.name + '.png');
-    await page.screenshot({ path: file, fullPage: !!shot.fullPage });
+    if (shot.targets) {
+      boxes[shot.name] = await page.evaluate((targets) => {
+        const out = {};
+        for (const t of targets) {
+          const el = document.querySelector(t.sel);
+          const r = el && el.getBoundingClientRect();
+          if (r && r.width && r.height) out[t.n] = [Math.round(r.left + scrollX), Math.round(r.top + scrollY), Math.round(r.right + scrollX), Math.round(r.bottom + scrollY)];
+        }
+        return out;
+      }, shot.targets);
+      const missing = shot.targets.filter((t) => !boxes[shot.name][t.n]).map((t) => t.n);
+      if (missing.length) problems.push(`[${shot.name}] targets not found: ${missing.join(', ')}`);
+    }
+    if (shot.element) await page.locator(shot.element).first().screenshot({ path: file });
+    else {
+      const clip = shot.clip ? { x: shot.clip[0], y: shot.clip[1], width: shot.clip[2], height: shot.clip[3] } : undefined;
+      await page.screenshot({ path: file, fullPage: !!shot.fullPage && !clip, clip });
+    }
     console.log('shot', file);
   }
+  if (Object.keys(boxes).length) fs.writeFileSync(boxesFile, JSON.stringify(boxes, null, 1));
   console.log(problems.length ? 'problems seen while shooting:\n' + problems.join('\n') : 'no console or network problems');
   await browser.close();
 })().catch((e) => { console.error(e); process.exit(1); });
