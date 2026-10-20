@@ -3,12 +3,13 @@
 Reusable Claude Code skills for [Build Together](https://github.com/Build-Together-LLC) — Frappe/ERPNext
 engineering, design and research, and document/diagram tooling.
 
-Everything directly under `skills/` is **product-agnostic**. No skill there assumes a particular
+Everything under `skills/generic/` is **product-agnostic**. No skill there assumes a particular
 client, site, bench layout or internal service. Skills that are bound to one tenant live in that
 tenant's folder instead:
 
 | Folder | Holds |
 |---|---|
+| `skills/generic/` | Product-agnostic skills |
 | `skills/vidira/` | Skills specific to Vidira (VIPL): supplier invoices, inwarding, reorder |
 | `skills/unity/` | Skills specific to the Unity / Walnut bench |
 
@@ -19,14 +20,14 @@ Clone once, then symlink the skills you want into your Claude Code skills direct
 ```bash
 git clone git@github.com:Build-Together-LLC/skillset.git ~/skillset
 
-# all of the general ones (the vidira and unity folders are not skills themselves)
-for d in ~/skillset/skills/*/; do [ -f "$d/SKILL.md" ] && ln -s "$d" ~/.claude/skills/; done
+# all of the general ones
+ln -s ~/skillset/skills/generic/* ~/.claude/skills/
 
 # a tenant's skills
 ln -s ~/skillset/skills/vidira/* ~/.claude/skills/
 
 # or per project
-mkdir -p .claude/skills && ln -s ~/skillset/skills/frappe-review .claude/skills/
+mkdir -p .claude/skills && ln -s ~/skillset/skills/generic/frappe-review .claude/skills/
 ```
 
 Each skill is a directory containing `SKILL.md` plus any `scripts/`, `references/`, `templates/` and

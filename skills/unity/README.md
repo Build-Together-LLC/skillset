@@ -19,6 +19,6 @@ Source: https://github.com/UnityAppSuite/unity_dev_tools (`skills/`).
 | `doc-request-helper` | Helps raise and track document requests |
 
 `timesheet-suite` and `manager-work-report` also exist in unity_dev_tools but are already in the
-general `skills/` folder here, so they are not repeated.
+general `skills/generic/` folder here, so they are not repeated.
 
 Link them with `ln -s ~/skillset/skills/unity/* ~/.claude/skills/`.
