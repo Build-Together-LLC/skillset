@@ -19,6 +19,12 @@ week") and share the items below. The skill pulls everything, writes the narrati
 | Context | Anything blocked or waiting on someone | Accurate blocked and ask sections |
 | Audience | Manager name and what they care about | Tone and emphasis |
 
+## Limit to an organisation or repo
+Say "only UnityAppSuite" (or "only Org/repo") and the skill fetches PRs, reviews and commits from
+that organisation or repo alone; other organisations are not pulled or shown. Several can be listed.
+The timesheet, Jira, console log and documents are not tied to an organisation; skip them when you
+want a commits-only report.
+
 ## Output choices
 - **Full report** (default): summary, time split, week table, day by day, delivered work, pending,
   blocked, documents, asks.

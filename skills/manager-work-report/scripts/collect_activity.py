@@ -13,6 +13,35 @@ TO = os.environ["TO"]
 OUT = os.environ["OUT"]
 GH = "https://api.github.com"
 csv.field_size_limit(10**8)
+ORGS = [o.strip().lower() for o in os.environ.get("GH_ORGS", "").split(",") if o.strip()]
+REPOS = [r.strip().lower() for r in os.environ.get("GH_REPOS", "").split(",") if r.strip()]
+
+
+def allowed(full_name):
+    full = full_name.lower()
+    if REPOS and full not in REPOS:
+        return False
+    if ORGS and full.split("/")[0] not in ORGS:
+        return False
+    return True
+
+
+def scopes():
+    if ORGS:
+        return [f" org:{o}" for o in ORGS]
+    return [""]
+
+
+def search_prs(token, query):
+    out, seen = [], set()
+    for scope in scopes():
+        for p in gh_paged(f"{GH}/search/issues", token, {"q": query + scope}, key="items"):
+            repo = p["repository_url"].split("/repos/")[1]
+            if (repo, p["number"]) in seen or not allowed(repo):
+                continue
+            seen.add((repo, p["number"]))
+            out.append(p)
+    return out
 
 
 def gh_get(url, token, params=None, accept="application/vnd.github+json"):
@@ -48,7 +77,7 @@ def github(accounts):
     result = {"prs_merged": [], "prs_closed_unmerged": [], "prs_opened": [], "prs_open": [], "prs_reviewed": [], "commits": []}
     seen_pr, seen_commit = set(), set()
     for login, token in accounts.items():
-        items = gh_paged(f"{GH}/search/issues", token, {"q": f"author:{login} type:pr updated:>={FROM}"}, key="items")
+        items = search_prs(token, f"author:{login} type:pr updated:>={FROM}")
         for p in items:
             repo = p["repository_url"].split("/repos/")[1]
             key = (repo, p["number"])
@@ -65,15 +94,15 @@ def github(accounts):
                 result["prs_closed_unmerged"].append(row)
             if in_range(row["created"]):
                 result["prs_opened"].append(row)
-        for p in gh_paged(f"{GH}/search/issues", token, {"q": f"author:{login} type:pr state:open"}, key="items"):
+        for p in search_prs(token, f"author:{login} type:pr state:open"):
             repo = p["repository_url"].split("/repos/")[1]
             result["prs_open"].append({"account": login, "repo": repo, "number": p["number"], "title": p["title"], "created": p["created_at"][:10], "updated": p["updated_at"][:10], "url": p["html_url"], "draft": p.get("draft", False)})
-        for p in gh_paged(f"{GH}/search/issues", token, {"q": f"reviewed-by:{login} -author:{login} type:pr updated:>={FROM}"}, key="items"):
+        for p in search_prs(token, f"reviewed-by:{login} -author:{login} type:pr updated:>={FROM}"):
             repo = p["repository_url"].split("/repos/")[1]
             result["prs_reviewed"].append({"account": login, "repo": repo, "number": p["number"], "title": p["title"], "author": p["user"]["login"], "updated": p["updated_at"][:10], "url": p["html_url"]})
         repos = gh_paged(f"{GH}/user/repos", token, {"affiliation": "owner,collaborator,organization_member", "sort": "pushed"})
         for repo in repos:
-            if repo["pushed_at"][:10] < FROM:
+            if repo["pushed_at"][:10] < FROM or not allowed(repo["full_name"]):
                 continue
             r = gh_get(f"{GH}/repos/{repo['full_name']}/commits", token, {"author": login, "since": FROM + "T00:00:00Z", "until": TO + "T23:59:59Z", "per_page": 100})
             if r.status_code != 200:

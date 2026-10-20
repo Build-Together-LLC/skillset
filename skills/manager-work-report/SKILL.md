@@ -35,20 +35,27 @@ A generic example narrative is in `references/example_narrative.json`.
    URL and login, Jira site, email and API token, optional Console Log CSV, optional docs folders.
    Skip a source if it is missing and say so in the report. Use credentials read-only through
    environment variables; never write them to a file, the report or memory.
-4. **Audience.** Default "Reporting manager". Keep wording factual and free of internal gossip.
+4. **Scope (org or repo filter).** If the user limits the report to one organisation or repo ("commits only
+   from UnityAppSuite"), set `GH_ORGS=UnityAppSuite` (comma-separated for several) and, for exact
+   repos, `GH_REPOS=Org/repo,Org/other`. Every PR, review and commit is then restricted to those
+   orgs or repos; nothing from other orgs is fetched or shown. The timesheet, Jira, console log and
+   documents are not org-scoped, so for a GitHub-only answer leave those sources out and build with
+   `--sections summary,weekly,daily,delivered`. Say which scope was applied at the top of the reply.
+5. **Audience.** Default "Reporting manager". Keep wording factual and free of internal gossip.
 
 ## Step 1 - Collect
 
 ```bash
 FROM=2026-09-15 TO=2026-10-20 OUT=$SCRATCH/report_data.json \
 GH_ACCOUNTS='{"login1":"<token1>","login2":"<token2>"}' \
+GH_ORGS=<optional org,org> GH_REPOS=<optional Org/repo,Org/repo> \
 TS_HOST=https://<timesheet host> TS_USER=<user> TS_PWD='<password>' \
 JIRA_HOST=https://<site>.atlassian.net JIRA_EMAIL=<email> JIRA_TOKEN='<token>' \
 CONSOLE_CSV="<path>/Console Log.csv" DOCS_DIRS="<dir1>:<dir2>" \
 python3 -I scripts/collect_activity.py
 ```
 
-It gathers, for the range: PRs merged, PRs closed without merge, PRs opened, all PRs open now,
+It gathers, for the range (limited to `GH_ORGS` / `GH_REPOS` when set): PRs merged, PRs closed without merge, PRs opened, all PRs open now,
 teammate PRs reviewed, commits (default branch of every repo the token can reach), timesheet rows,
 Jira issues the user is assignee or reporter on that changed in the range, System Console runs per
 day and per script (titles are masked), and documents modified in the range (private-looking file
