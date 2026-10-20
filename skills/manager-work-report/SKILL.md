@@ -41,7 +41,12 @@ A generic example narrative is in `references/example_narrative.json`.
    orgs or repos; nothing from other orgs is fetched or shown. The timesheet, Jira, console log and
    documents are not org-scoped, so for a GitHub-only answer leave those sources out and build with
    `--sections summary,weekly,daily,delivered`. Say which scope was applied at the top of the reply.
-5. **Audience.** Default "Reporting manager". Keep wording factual and free of internal gossip.
+5. **Accounts.** Several GitHub accounts work together: list them all in `GH_ACCOUNTS` and results are
+   merged and de-duplicated. If the gh CLI is logged in to those accounts, set `GH_TOKEN_FROM_GH=1`
+   and use empty token values (`'{"login1":"","login2":""}'`); tokens are read from the gh keyring
+   and never printed. Commits also come from the commits of each PR in range, so work on feature
+   branches (not only default branches) is counted.
+6. **Audience.** Default "Reporting manager". Keep wording factual and free of internal gossip.
 
 ## Step 1 - Collect
 

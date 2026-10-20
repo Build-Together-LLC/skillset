@@ -19,6 +19,11 @@ week") and share the items below. The skill pulls everything, writes the narrati
 | Context | Anything blocked or waiting on someone | Accurate blocked and ask sections |
 | Audience | Manager name and what they care about | Tone and emphasis |
 
+## Several accounts
+Name every GitHub account you commit from. Results are merged without duplicates. With the gh CLI
+logged in to those accounts, no token needs to be shared. Commits on feature branches are counted
+through the pull requests they belong to.
+
 ## Limit to an organisation or repo
 Say "only UnityAppSuite" (or "only Org/repo") and the skill fetches PRs, reviews and commits from
 that organisation or repo alone; other organisations are not pulled or shown. Several can be listed.

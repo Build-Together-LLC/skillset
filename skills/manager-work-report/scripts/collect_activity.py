@@ -113,6 +113,19 @@ def github(accounts):
                 seen_commit.add(c["sha"])
                 result["commits"].append({"account": login, "repo": repo["full_name"], "sha": c["sha"][:10], "date": c["commit"]["author"]["date"][:10],
                                           "message": c["commit"]["message"].split("\n")[0][:140], "url": c["html_url"]})
+    own = {login.lower() for login in accounts}
+    for pr in result["prs_opened"] + result["prs_merged"]:
+        token = accounts[next(l for l in accounts if l.lower() == pr["account"].lower())]
+        for c in gh_paged(f"{GH}/repos/{pr['repo']}/pulls/{pr['number']}/commits", token):
+            if c["sha"] in seen_commit:
+                continue
+            login = (c.get("author") or {}).get("login", "")
+            day = c["commit"]["author"]["date"][:10]
+            if login.lower() not in own or not in_range(day):
+                continue
+            seen_commit.add(c["sha"])
+            result["commits"].append({"account": login, "repo": pr["repo"], "sha": c["sha"][:10], "date": day,
+                                      "message": c["commit"]["message"].split("\n")[0][:140], "url": c["html_url"]})
     return result
 
 
@@ -208,7 +221,11 @@ def documents(dirs):
 def main():
     data = {"from": FROM, "to": TO, "generated": datetime.date.today().isoformat()}
     if os.environ.get("GH_ACCOUNTS"):
-        data["github"] = github(json.loads(os.environ["GH_ACCOUNTS"]))
+        accounts = json.loads(os.environ["GH_ACCOUNTS"])
+        if os.environ.get("GH_TOKEN_FROM_GH"):
+            import subprocess
+            accounts = {a: subprocess.run(["gh", "auth", "token", "--user", a], capture_output=True, text=True).stdout.strip() for a in accounts}
+        data["github"] = github(accounts)
         g = data["github"]
         print("github: merged", len(g["prs_merged"]), "closed unmerged", len(g["prs_closed_unmerged"]), "opened", len(g["prs_opened"]), "open now", len(g["prs_open"]), "reviewed", len(g["prs_reviewed"]), "commits", len(g["commits"]))
     if os.environ.get("TS_HOST"):
