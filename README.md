@@ -3,9 +3,14 @@
 Reusable Claude Code skills for [Build Together](https://github.com/Build-Together-LLC) — Frappe/ERPNext
 engineering, design and research, and document/diagram tooling.
 
-Everything here is **product-agnostic**. No skill in this repo assumes a particular client, site,
-bench layout or internal service. Skills that are bound to one tenant's infrastructure stay in that
-tenant's own repo.
+Everything directly under `skills/` is **product-agnostic**. No skill there assumes a particular
+client, site, bench layout or internal service. Skills that are bound to one tenant live in that
+tenant's folder instead:
+
+| Folder | Holds |
+|---|---|
+| `skills/vidira/` | Skills specific to Vidira (VIPL): supplier invoices, inwarding, reorder |
+| `skills/unity/` | Skills specific to the Unity / Walnut bench |
 
 ## Install
 
@@ -14,8 +19,11 @@ Clone once, then symlink the skills you want into your Claude Code skills direct
 ```bash
 git clone git@github.com:Build-Together-LLC/skillset.git ~/skillset
 
-# all of them
-ln -s ~/skillset/skills/* ~/.claude/skills/
+# all of the general ones (the vidira and unity folders are not skills themselves)
+for d in ~/skillset/skills/*/; do [ -f "$d/SKILL.md" ] && ln -s "$d" ~/.claude/skills/; done
+
+# a tenant's skills
+ln -s ~/skillset/skills/vidira/* ~/.claude/skills/
 
 # or per project
 mkdir -p .claude/skills && ln -s ~/skillset/skills/frappe-review .claude/skills/
