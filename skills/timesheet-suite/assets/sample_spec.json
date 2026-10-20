@@ -1,0 +1,71 @@
+{
+  "date": "2026-01-15",
+  "start_time": null,
+  "target_total_hours": null,
+  "note": "Example day used to illustrate the spec, JSON and Discord shapes. Work spanned implementing an invoice export feature and a report-builder pairing session, debugging a failing scheduled job and a staging deployment, alongside a code review, a status update and the daily standup. All names, projects, repositories and records here are fictional.",
+  "entries": [
+    {
+      "label": "Coding",
+      "activity_type": "Coding",
+      "hours": 2,
+      "summary": "Implemented the invoice export feature on the billing module and wired it to the download action",
+      "description": "Implemented the invoice export feature on the billing module and wired it to the download action.",
+      "links": [{"label": "PR-101", "url": "https://github.com/example-org/example-repo/pull/101"}],
+      "project": null
+    },
+    {
+      "label": "Coding + Meeting",
+      "activity_type": "Coding + Meeting",
+      "hours": 1.5,
+      "summary": "Paired with a teammate on the report builder — reviewed the draft component and agreed the filter layout",
+      "description": "Paired with a teammate on the report builder: reviewed the draft component and agreed the filter layout.",
+      "links": [{"label": "PR-102", "url": "https://github.com/example-org/example-repo/pull/102"}],
+      "project": null
+    },
+    {
+      "label": "Debugging",
+      "activity_type": "DEBUGGING",
+      "hours": 1,
+      "summary": "Failing scheduled job on staging traced to a null date field; applied a guard",
+      "description": "Investigated a failing scheduled job on staging, traced it to a null date field and applied a guard.",
+      "links": [{"label": "job log", "url": "https://erp.example.com/app/scheduled-job-log/EXAMPLE-JOB-001"}],
+      "project": null
+    },
+    {
+      "label": "Deployment",
+      "activity_type": "Deployment",
+      "hours": 1,
+      "summary": "Deployed billing and reporting changes to staging; smoke tests pass",
+      "description": "Deployed the billing and reporting changes to the staging environment and verified the smoke tests.",
+      "links": [],
+      "project": null
+    },
+    {
+      "label": "Code Review",
+      "activity_type": "Code review",
+      "hours": 0.5,
+      "summary": "Reviewed + merged PR-103",
+      "description": "Reviewed and merged a teammate's pull request for the currency formatter.",
+      "links": [{"label": "PR-103", "url": "https://github.com/example-org/example-repo/pull/103"}],
+      "project": null
+    },
+    {
+      "label": "Coordination",
+      "activity_type": "Communication",
+      "hours": 0.5,
+      "summary": "Weekly status to the project lead; one item blocked on client input",
+      "description": "Shared the weekly status with the project lead and flagged one item blocked on client input.",
+      "links": [],
+      "project": null
+    },
+    {
+      "label": "Meeting",
+      "activity_type": "Meeting",
+      "hours": 0.5,
+      "summary": "Daily standup; picked up the next ticket",
+      "description": "Attended the daily standup and picked up the next ticket.",
+      "links": [{"label": "Issue-57", "url": "https://github.com/example-org/example-repo/issues/57"}],
+      "project": null
+    }
+  ]
+}

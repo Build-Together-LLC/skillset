@@ -1,0 +1,19 @@
+{
+	"permissions": {
+		"allow": [
+			"Bash(python3 *timesheet_suite.py pull *)",
+			"Bash(python3 *timesheet_suite.py sync *)",
+			"Bash(python3 *timesheet_suite.py update *)",
+			"Bash(python3 *timesheet_suite.py amend *)",
+			"Bash(python3 *timesheet_suite.py cancel *)",
+			"Bash(python3 *timesheet_suite.py submit *)"
+		],
+		"ask": [
+			"Bash(*--confirm-create*)",
+			"Bash(*--confirm-update*)",
+			"Bash(*--confirm-cancel*)",
+			"Bash(*--confirm-delete*)",
+			"Bash(*--confirm-submit*)"
+		]
+	}
+}

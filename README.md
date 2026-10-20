@@ -67,6 +67,7 @@ line is what decides when a skill fires — edit it, not the body, if a skill tr
 | `self-improvement` | Captures learnings, errors, and corrections to enable continuous improvement. Use when: (1) A command or operation fails unexpectedly, (2) User... |
 | `server-scripts` | Frappe server-side Python patterns for controllers, document events, whitelisted APIs, background jobs, and database operations |
 | `testing-patterns` | How to write robust Frappe tests — FrappeTestCase, factories, mocking frappe.sendmail / external HTTP, permission tests, change_settings,... |
+| `timesheet-suite` | Turn a daily work update (notes, chat, PR and Jira links) into a Frappe Timesheet JSON plus Slack/Teams/Gmail/WhatsApp/Discord messages for ANY Frappe site; optional GitHub/Jira enrichment, draft sync to the site and Discord/Slack posting |
 | `user-research` | Plan, conduct, and synthesize user research |
 | `ux-copy` | Write or review UX copy — microcopy, error messages, empty states, CTAs |
 | `workflow-patterns` | Frappe Workflow design — multi-state document lifecycles, role-based transitions, state-scoped field permissions, workflow handlers, and the... |
@@ -98,7 +99,8 @@ ship, not a leftover.
 ## What is deliberately not here
 
 Skills bound to one tenant's sites, repos or infrastructure stay with that tenant, per the rule
-above. At the time of writing that means the dependency and symbol-graph skills, which read a
+above. (`timesheet-suite/references/examples/` holds two real organisations' setups on purpose, as
+worked references behind a generic skill — the same pattern as `products.example.md` below.) At the time of writing that means the dependency and symbol-graph skills, which read a
 pre-computed index built by a cron on one particular bench rather than from the repo they ship in.
 
 `deploy-notes-comparison` was in that category and was generalised instead: every product-specific
