@@ -1,0 +1,57 @@
+{
+  "title": "Work Report: 1 June to 30 June 2026",
+  "subtitle": "Jane Doe \u00b7 Platform engineering",
+  "prepared_by": "Jane Doe",
+  "audience": "Reporting manager",
+  "status": "v1.0 for review",
+  "sources": "GitHub, timesheet, Jira",
+  "extra_orgs": [
+    "ExampleOrg"
+  ],
+  "jira_prefixes": [
+    "PROJ"
+  ],
+  "weekly_headlines": {
+    "2026-06-01": "Billing API released; PROJ-12 closed."
+  },
+  "summary": [
+    "Over the month I logged about 150 hours and merged 20 pull requests across 4 repositories.",
+    "The billing API reached production and the import tool was stabilised."
+  ],
+  "went_well": [
+    "Billing API released to production (ExampleOrg/billing#41, PROJ-12)."
+  ],
+  "pending": [
+    "Two pull requests wait for review (ExampleOrg/billing#44)."
+  ],
+  "blocked_summary": [
+    "Staging deploy waits for an access grant."
+  ],
+  "blocked": [
+    {
+      "item": "Staging deploy",
+      "why": "No deploy access to the staging server.",
+      "need": "Access grant.",
+      "owner": "Infrastructure lead"
+    }
+  ],
+  "themes": [
+    {
+      "title": "Billing API",
+      "text": "Built, tested and released the billing endpoints.",
+      "refs": [
+        "ExampleOrg/billing#41",
+        "PROJ-12"
+      ]
+    }
+  ],
+  "time_notes": [
+    "Coding and testing are about 40 percent of logged time."
+  ],
+  "pending_detail": [
+    "Sprint closes on 5 July; unfinished items carry over."
+  ],
+  "asks": [
+    "Decision: date for the staging cutover."
+  ]
+}

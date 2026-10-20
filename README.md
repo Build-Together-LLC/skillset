@@ -41,6 +41,7 @@ line is what decides when a skill fires — edit it, not the body, if a skill tr
 | `diagrams-as-code` | Generate professional architecture diagrams (AWS, GCP, Azure, Kubernetes, ERPNext, network, block diagrams) as PNG images using Python code |
 | `doctype-patterns` | Frappe DocType creation patterns, field types, controller hooks, and data modeling best practices |
 | `document-builder` | Produce any formal document as a styled .docx (or Markdown) using the house format: Times New Roman 12pt justified, real Word heading styles that... |
+| `manager-work-report` | Build a manager-ready .docx work report for any date range from GitHub PRs and commits, timesheet, Jira and console logs: summary, week table, 3-4 lines per day, pending and blocked, with clickable links. |
 | `feature-to-prd` | Architect agent that transforms a preliminary feature document, presentation, or brief into a fully structured Product Requirements Document (PRD)... |
 | `frappe-api` | Frappe Python and JavaScript API reference including document operations, database queries, utilities, and REST API patterns |
 | `frappe-architect` | Turns a BRD or feature brief into a technical architecture plan for Frappe/ERPNext |
