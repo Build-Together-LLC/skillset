@@ -54,6 +54,11 @@ Add a short *Say:* line under diagrams. Put numbers on screenshots and use the s
   records, and say so in the hand-over.
 - Delete the generator, screenshots and seed files after the user has the .docx, if they ask for only the document.
 
+## Helpers for slides
+`s.split` (picture and numbered lines), `s.pair` (two pictures with captions), `s.alone` (one picture), `s.quad` (a row of phones or steps),
+`s.say` (speaker line), `s.fit` (largest width that keeps a picture on the page), and `s.table`. `split` shrinks a tall picture for you.
+To update an old deck, reuse its unchanged slides by line number (`references/updating-a-document.md`).
+
 ## Build and check
 ```bash
 PY=~/.cache/demo-doc-builder/venv/bin/python

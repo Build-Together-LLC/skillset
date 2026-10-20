@@ -1,10 +1,71 @@
 {
   "color": "#DC2626",
   "items": [
-    { "src": "work/shots/01_settings.png", "out": "work/img/01_settings.png",
-      "ops": [ { "rect": [40, 140, 816, 205] }, { "badge": [1, 40, 140] }, { "rect": [40, 225, 816, 280] }, { "badge": [2, 40, 225] },
-               { "pixelate": [48, 298, 168, 420, "QR hidden"] }, { "arrow": [330, 520, 190, 484] } ] },
-    { "src": "work/shots/02_saved.png", "out": "work/img/02_saved.png",
-      "ops": [ { "rect": [40, 440, 300, 495] }, { "badge": [3, 40, 440] }, { "pixelate": [48, 298, 168, 420, "QR hidden"] } ] }
-  ]
+    {
+      "src": "work/shots/01_settings.png",
+      "out": "work/img/01_settings.png",
+      "ops": [
+        {
+          "box": [
+            "01_settings",
+            1
+          ]
+        },
+        {
+          "box": [
+            "01_settings",
+            2
+          ]
+        },
+        {
+          "pixelate": [
+            48,
+            298,
+            168,
+            420,
+            "QR hidden"
+          ]
+        },
+        {
+          "arrow": [
+            330,
+            520,
+            190,
+            484
+          ]
+        }
+      ]
+    },
+    {
+      "src": "work/shots/02_saved.png",
+      "out": "work/img/02_saved.png",
+      "ops": [
+        {
+          "rect": [
+            40,
+            440,
+            300,
+            495
+          ]
+        },
+        {
+          "badge": [
+            3,
+            40,
+            440
+          ]
+        },
+        {
+          "pixelate": [
+            48,
+            298,
+            168,
+            420,
+            "QR hidden"
+          ]
+        }
+      ]
+    }
+  ],
+  "boxes": "work/shots/boxes.json"
 }

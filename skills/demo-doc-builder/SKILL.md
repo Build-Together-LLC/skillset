@@ -30,31 +30,41 @@ Everything lives next to this file:
 | `scripts/setup.sh` | one-time environment (Python venv with python-docx + Pillow, playwright-core, browser check) |
 | `scripts/demodoc.py` | the document library (themes, hyperlinks, callouts, code blocks, tables, figures) |
 | `scripts/build_from_spec.py` | JSON spec -> .docx |
-| `scripts/screenshots.js` | JSON plan -> PNG screenshots (headless Chrome, multi-user contexts, `scale` for sharp 2x images, `dismiss` to close stray popups) |
-| `scripts/annotate.py` | numbered badges, boxes, arrows, **pixelate/blur secrets** (`scale` matches 2x screenshots) |
-| `scripts/demoslides.py` | **presentation mode**: landscape one-slide-per-page .docx (`slide`, `split`, `pair`, `say`) |
+| `scripts/screenshots.js` | JSON plan -> PNG screenshots (headless Chrome, multi-user contexts, `scale` for sharp 2x images, `dismiss` to close stray popups, `targets` records field boxes, `element`/`clip` for partial shots) |
+| `scripts/annotate.py` | numbered badges, boxes, arrows, **pixelate/blur secrets** (`scale` matches 2x screenshots), `{"box": [shot, n]}` draws on a recorded target |
+| `scripts/crop.py` | crop screenshots by CSS pixels (sidebar off, tall pages cut) |
+| `scripts/contact_sheet.py` | many images on one labelled sheet, to review a batch in one look |
+| `scripts/privacy_scan.py` | scan the finished .docx for foreign e-mails, tokens, keys and a deny list of real names |
+| `scripts/chat_mock.py` | phone / chat screens from a transcript JSON built from the product's real strings |
+| `scripts/demoslides.py` | **presentation mode**: landscape one-slide-per-page .docx (`slide`, `split`, `pair`, `alone`, `quad`, `say`) |
 | `scripts/diagram.js` | JSON -> flow diagrams and file-tree pictures |
 | `scripts/render_check.sh` | docx -> PDF -> contact sheets so you can look at every page |
 | `templates/brief.md`, `templates/themes.json` | what the user fills in, the colour themes |
-| `references/*.md` | hosting recipes, Frappe demo-data lessons, security rules, writing style, **presentation-demo** |
+| `templates/frappe_seed_teardown.py` | manifest-based seed and teardown of fictional records, restores the settings it changed |
+| `references/*.md` | hosting recipes, Frappe demo-data lessons, security rules, writing style, **presentation-demo**, **updating-a-document**, **review-checklist**, **chat-mockups** |
 | `examples/` | a complete working sample: `bash examples/run-example.sh purple`; `slides_example.py` shows presentation mode |
 
 Read `references/security-and-privacy.md` and `references/writing-style.md` before you start. Read
-`references/hosting-recipes.md` when the guide covers servers, Docker or managed hosting, and
-`references/frappe-demo-data.md` when the product is a Frappe / ERPNext app.
+`references/hosting-recipes.md` when the guide covers servers, Docker or managed hosting,
+`references/frappe-demo-data.md` when the product is a Frappe / ERPNext app,
+`references/updating-a-document.md` when an older guide or deck of the same product exists,
+`references/chat-mockups.md` when the flow runs in a chat, and `references/review-checklist.md` before every hand-over.
+In the commands below `$SKILL` is this skill's folder (the one that holds this file).
 
 ---
 
-## Two kinds of output (pick in Step 0)
+## Three kinds of output (pick in Step 0)
 
 | The user says | Build | Read |
 |---|---|---|
 | "setup guide", "how-to", "document the setup", "user manual" | the full guide (Steps 1 to 6 below) | `references/*.md` |
 | "demo file", "for the presentation", "only the flow", "only the demonstration", "like slides" | the **presentation demo**: configuration + flow only, landscape, one slide per page | `references/presentation-demo.md` |
+| "update", "new one as per the updated things", "delete the old and create new", or an old document and its build folder exist | an **update**: reuse the old generator, seed and pictures; retake only what changed | `references/updating-a-document.md` |
 
 For the presentation demo keep Steps 1 to 3 and 5 to 6, replace Step 4 with `scripts/demoslides.py`, take screenshots at
 `"scale": 2`, show configuration in detail, and leave out install, hosting, key rotation, troubleshooting and
-command cheat-sheets. If the user wants both, build the guide first and the slides second from the same screenshots.
+command cheat-sheets. If the user wants both, build the guide first and the slides second from the same screenshots. If an older version exists, update it
+(third row) instead of starting again: it keeps the structure the reader already knows and is much faster.
 
 ## Step 0. Intake (do not stall)
 
@@ -67,7 +77,7 @@ Offer the themes by name: `green` `navy` (deep navy/blue) `blue` `purple` `orang
 ## Step 1. Environment
 
 ```bash
-bash .claude/.skill/demo-doc-builder/scripts/setup.sh
+bash $SKILL/scripts/setup.sh
 ```
 It prints the python, playwright, browser and LibreOffice paths. Use that venv's python for the scripts:
 `PY=~/.cache/demo-doc-builder/venv/bin/python`. If Chrome is missing, tell the user; do not skip screenshots.
@@ -92,9 +102,11 @@ It prints the python, playwright, browser and LibreOffice paths. Use that venv's
    Use `contexts` for a second user.
 3. Take them: `node scripts/screenshots.js plan.json`. Read the printed console/network problems; a 404 in a
    shot means the shot is wrong or the product is broken, fix it first.
-4. **Look at each PNG** (Read tool) and choose annotation coordinates from what you see.
-5. Annotate: `python scripts/annotate.py annotate.json` (badges 1..n that match a table/list in the text,
-   boxes around the thing to use, arrows). **Pixelate** QR codes, keys, tokens, e-mails, phone numbers.
+4. **Look at each PNG** (Read tool, or a batch on one sheet with `contact_sheet.py`) and choose annotation coordinates from what you see.
+   Better: give a shot `targets` (`[{"n": 1, "sel": "[data-fieldname=email]"}]`); the plan run records their boxes and annotate uses them.
+5. Annotate: `python $SKILL/scripts/annotate.py annotate.json` (badges 1..n that match a table/list in the text,
+   boxes around the thing to use, arrows, or `{"box": ["shot", 1]}` for a recorded target). **Pixelate** QR codes, keys, tokens, e-mails,
+   phone numbers and any list that shows real people. Crop with `crop.py` (sidebar off).
 6. Diagrams: `node scripts/diagram.js diagrams.json`. Always include an architecture flow, one per
    deployment (local / server / managed host), a "where the files live" tree for server installs, and a
    flow for any procedure with an order (key rotation).
@@ -143,17 +155,17 @@ d.save("guide.docx")
 ```
 
 Helpers: `h1 h2 h3 p bullets steps code callout(NOTE|TIP|WARNING|EXAMPLE|SECURITY) table img expect cover
-contents pagebreak spacer link`. Figures and tables are numbered automatically; refer to them with
+contents pagebreak spacer link figrow fit`. Figures and tables are numbered automatically; refer to them with
 `{fig:label}` / `{tbl:label}` so numbers never drift when you insert content.
 
 ## Step 5. Check it like a reader
 
 ```bash
-bash scripts/render_check.sh out.docx      # prints contact-sheet paths
+bash $SKILL/scripts/render_check.sh out.docx      # prints contact-sheet paths
 ```
 Read **every sheet**. Fix: cropped images, code blocks split across pages, orphan headings, overflowing tables,
-wrong numbering, a missing hyperlink. Re-run until clean. Also grep the finished text for anything that must not
-appear (real names, numbers, keys, internal product names).
+wrong numbering, a missing hyperlink. Re-run until clean. Then run `privacy_scan.py doc.docx --deny names.txt`
+(real names and numbers you saw while shooting) and go through `references/review-checklist.md`. Pictures need your eyes: contact sheets.
 
 ## Step 6. Hand over
 
@@ -169,5 +181,7 @@ so the guide can be regenerated after a change.
 - Every URL clickable, every URL checked.
 - Times New Roman 12 pt body. Theme colours only. Real heading styles.
 - Do not commit or publish the document unless asked.
+- Never stop a server or process with `pkill -f` / `pgrep -f | xargs kill` (it kills your own shell). Use the pid from `lsof -ti :<port>`.
+- Leave nothing behind: demo data torn down, changed settings restored, servers and temporary API keys you started or created removed.
 - Look at every screenshot before using it: stray popups (Frappe Session Defaults), clipped dropdowns and secrets are common.
 - If the user later asks to delete related files, keep only the one document they name.
