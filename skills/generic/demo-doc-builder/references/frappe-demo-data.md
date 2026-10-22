@@ -32,8 +32,10 @@ Lessons from real runs. Follow them every time.
     (`/app/<doctype>?name=%5B%22like%22%2C%22Demo%25%22%5D`) so real rows never appear.
 13. **Do not run the product's tests on that site between seeding and shooting.** Tests commonly reset Single doctypes (settings pages) and
     wipe the demo configuration. If it happens, re-apply the demo settings and shoot again.
-14. **Console scripts**: pipe one line, `exec(open('/abs/run.py').read(), globals())`, into `bench --site <site> console`. Set variables such as `STEPS`
-    inside a wrapper file, not on a second line of the pipe. Print lines that start with `RES` and grep for them: the console adds prompts and colours.
+14. **Run seed and teardown scripts with `templates/frappe_run.py`**, not through `bench console`. The console reads piped lines as separate cells:
+    a multi-line function, a variable set on the first line (`STEPS`) or `exec(..., globals())` can fail with `NameError`, and the first line can be lost.
+    The runner does `frappe.init`, `frappe.connect` and `exec` with an explicit namespace: `python frappe_run.py <site> seed.py users,core,slots`
+    from the `sites` folder with the bench's Python. Print lines that start with `RES` and grep for them: the output also holds warnings.
 15. **Starting and stopping the dev server**: `bench --site <site> serve --port 8000` in the background, wait for `/api/method/ping`, stop it with the pid
     from `lsof -ti :8000`. Never use `pkill -f <pattern>` or `pgrep -f <pattern> | xargs kill`: the pattern also matches your own shell command and kills it (exit code 144).
 16. **If bench prints "Redis Queue ... connection refused"**, start the redis servers the bench is configured for
@@ -45,4 +47,14 @@ Lessons from real runs. Follow them every time.
     Check recipients and any colleague lists before using it.
 20. **Dates**: make seed dates relative to today so slots and bookings are in the future when you shoot, and say "as at <date>" in the document.
 21. **Scripted login**: use the form login of a demo user. If you must use an API key for the administrator to shoot, create it for the shoot and remove it afterwards.
-
+22. **Background jobs need a worker.** A button that only queues a job (bulk create, send, sync) does nothing until a worker runs, and the next
+    steps find no data. Start a worker for that queue only (`bench --site <site> worker --queue long`), not all queues, so old jobs and emails do not fire.
+    Wait for the job to finish before shooting the result. A job id may be de-duplicated for a while, so delete what a failed take created before the next take.
+23. **A slow first load is normal on a dev site.** A desk page can take 10 seconds to reach `load` and 30 seconds when a service is down. Wait for
+    `domcontentloaded`, allow a navigation timeout of 45 seconds, and check both Redis servers are running before a long shoot (they stop between sessions).
+24. **Mirror the real site's configuration, not its data.** When the document must match UAT or production, read the live settings through the API
+    (read only, with the key the owner gave you for that purpose), set the demo site to the same service names, policies and wording, and say in the
+    document that the screens come from a demo copy of that setup. Do not create or change records on a shared site unless the owner asks, and when
+    they do: dry run first, skip password and key fields, skip site-specific ids (for example a WhatsApp number id), and read the result back.
+25. **Lists fill themselves with real people.** Host chips, link drop-downs, search lists, "Assigned To" and linked-record cards show real names and
+    work emails even when the seed is fictional. Hide or rewrite them before shooting (see `security-and-privacy.md`, "Real data inside auto-filled lists").

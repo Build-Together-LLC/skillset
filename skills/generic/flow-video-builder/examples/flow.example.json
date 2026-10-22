@@ -1,0 +1,69 @@
+{
+ "config": {
+  "base": "",
+  "viewport": {
+   "width": 1440,
+   "height": 900
+  },
+  "voice": "en_US-amy-medium",
+  "speed": 1.14,
+  "scrub": [
+   "document.querySelectorAll('#staff').forEach(e=>{if(/Realperson/.test(e.innerText))e.innerText='Host: Demo Host';});"
+  ]
+ },
+ "scenes": [
+  {
+   "id": "s01",
+   "title": "Open the page",
+   "url": "file://{{EXAMPLES_ROOT}}/demo.html",
+   "ready": 1500,
+   "narr": [
+    "This is a tiny example page.",
+    "The title shows what the page is for."
+   ],
+   "steps": [
+    {
+     "s": 1,
+     "do": "hl",
+     "sel": "#title"
+    }
+   ]
+  },
+  {
+   "id": "s02",
+   "title": "Fill the form and confirm",
+   "url": "file://{{EXAMPLES_ROOT}}/demo.html",
+   "ready": 1500,
+   "narr": [
+    "Type a name.",
+    "Then an email address.",
+    "Press confirm, and the booking is shown."
+   ],
+   "steps": [
+    {
+     "s": 0,
+     "do": "type",
+     "sel": "#name",
+     "val": "Demo Guest"
+    },
+    {
+     "s": 1,
+     "do": "type",
+     "sel": "#email",
+     "val": "guest@example.com"
+    },
+    {
+     "s": 2,
+     "do": "click",
+     "sel": "#go"
+    },
+    {
+     "s": 2,
+     "d": 1.0,
+     "do": "hl",
+     "sel": "#done"
+    }
+   ]
+  }
+ ]
+}
