@@ -1,0 +1,146 @@
+{
+ "config": {
+  "base": "",
+  "viewport": {
+   "width": 1440,
+   "height": 900
+  },
+  "voice": "en_US-amy-medium",
+  "speed": 1.14,
+  "scrub": []
+ },
+ "scenes": [
+  {
+   "id": "c01",
+   "title": "A patient books on chat",
+   "url": "file://{{SKILL_ROOT}}/templates/chat.html",
+   "ready": 1500,
+   "narr": [
+    "This is the booking flow as the patient sees it, in a chat.",
+    "The clinic asks whether the patient would like to book a visit.",
+    "The patient taps the first button.",
+    "A list of days appears, and the patient picks one, and then a time.",
+    "The visit is booked. The message gives the reference and a personal link to manage the booking."
+   ],
+   "steps": [
+    {
+     "s": 0,
+     "do": "side",
+     "a": "The patient's chat",
+     "b": "A messaging app on the patient's phone"
+    },
+    {
+     "s": 1,
+     "do": "say",
+     "side": "in",
+     "text": "Would you like to book a visit?",
+     "btns": [
+      "Book a visit",
+      "Not now"
+     ]
+    },
+    {
+     "s": 2,
+     "do": "tap",
+     "title": "Book a visit"
+    },
+    {
+     "s": 2,
+     "d": 1.2,
+     "do": "say",
+     "side": "out",
+     "text": "Book a visit"
+    },
+    {
+     "s": 3,
+     "do": "side",
+     "a": "Pick a day",
+     "b": "Only days with free times are offered."
+    },
+    {
+     "s": 3,
+     "do": "say",
+     "side": "in",
+     "text": "Please pick a day for your visit.",
+     "btns": [
+      "Choose a day"
+     ]
+    },
+    {
+     "s": 3,
+     "d": 1.8,
+     "do": "openList",
+     "title": "Choose a day",
+     "rows": [
+      [
+       "1. Mon 26 Oct",
+       ""
+      ],
+      [
+       "2. Tue 27 Oct",
+       ""
+      ],
+      [
+       "3. Wed 28 Oct",
+       ""
+      ]
+     ]
+    },
+    {
+     "s": 3,
+     "d": 3.4,
+     "do": "pick",
+     "i": 1
+    },
+    {
+     "s": 3,
+     "d": 4.6,
+     "do": "say",
+     "side": "in",
+     "text": "Please pick a time on Tue 27 Oct.",
+     "btns": [
+      "Choose a time"
+     ]
+    },
+    {
+     "s": 3,
+     "d": 6.0,
+     "do": "openList",
+     "title": "Choose a time",
+     "rows": [
+      [
+       "1. 10:00 AM",
+       "Main clinic"
+      ],
+      [
+       "2. 11:00 AM",
+       "Main clinic"
+      ],
+      [
+       "3. 3:00 PM",
+       "Main clinic"
+      ]
+     ]
+    },
+    {
+     "s": 3,
+     "d": 7.6,
+     "do": "pick",
+     "i": 0
+    },
+    {
+     "s": 4,
+     "do": "side",
+     "a": "Confirmed",
+     "b": "The booking is saved and the emails are sent."
+    },
+    {
+     "s": 4,
+     "do": "say",
+     "side": "in",
+     "text": "Your visit is booked for Tue 27 Oct, 10:00 AM. Booking reference: BK-0001.\n\nTo view, change or cancel it, open:\nhttps://clinic.example.com/booking/0123456789abcdef0123456789abcdef\n\nReply \"book\" any time to check or book a visit."
+    }
+   ]
+  }
+ ]
+}

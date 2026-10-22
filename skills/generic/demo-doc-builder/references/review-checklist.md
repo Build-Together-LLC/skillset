@@ -22,6 +22,12 @@ Open anything annotated at full size once.
 deny list (put in it every real name and number you saw while shooting, one per line). It also lists external links: open each.
 It cannot read pictures, so the contact sheets above are not optional.
 
+## Rendering
+- `render_check.sh` can take three minutes or more for a 50 page file, and a second conversion hangs if a LibreOffice process is stuck. Run it in the
+  background with output to a log and wait on the log with an `until` loop that also ends when the process ends. If a conversion hangs, stop the stuck
+  `soffice.bin` by name (`pkill -x soffice.bin`), never by `-f` pattern, then run it again.
+- Check the page count of both files after every rebuild, and open the pages that changed, not only the first sheet.
+
 ## Layout
 - Read every rendered page. Fix: a heading alone at the bottom of a page, a table split after one row, a table pushed onto a
   page by itself, an almost empty page before a forced page break, a diagram cut at the right edge (widen it in its plan),

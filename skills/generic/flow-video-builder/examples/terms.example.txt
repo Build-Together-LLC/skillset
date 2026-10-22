@@ -1,0 +1,7 @@
+# One term per line, matched case-insensitively. A line starting with re: is a regular expression.
+# Build the real list from the data in the app: the names that show up in lists, drop-downs and dashboards, and your email domain.
+your-company.org
+re:[a-z0-9._-]+@(?!example\.com)[a-z0-9.-]+
+# surnames from the database (query them, do not guess):
+ExampleSurnameOne
+ExampleSurnameTwo

@@ -41,6 +41,7 @@ Everything lives next to this file:
 | `scripts/render_check.sh` | docx -> PDF -> contact sheets so you can look at every page |
 | `templates/brief.md`, `templates/themes.json` | what the user fills in, the colour themes |
 | `templates/frappe_seed_teardown.py` | manifest-based seed and teardown of fictional records, restores the settings it changed |
+| `templates/frappe_run.py` | run a seed or teardown script inside a site without `bench console` (the console mangles multi-line scripts) |
 | `references/*.md` | hosting recipes, Frappe demo-data lessons, security rules, writing style, **presentation-demo**, **updating-a-document**, **review-checklist**, **chat-mockups** |
 | `examples/` | a complete working sample: `bash examples/run-example.sh purple`; `slides_example.py` shows presentation mode |
 
@@ -185,3 +186,10 @@ so the guide can be regenerated after a change.
 - Leave nothing behind: demo data torn down, changed settings restored, servers and temporary API keys you started or created removed.
 - Look at every screenshot before using it: stray popups (Frappe Session Defaults), clipped dropdowns and secrets are common.
 - If the user later asks to delete related files, keep only the one document they name.
+
+## Related skills
+
+- A narrated screen-recorded video of the same flow (real recording, scene cards, soft voice-over, privacy scan): `flow-video-builder`.
+  Build the guide first; its storyboard and transcript are a good start for the video.
+- Short GIFs and tutorial clips for a help page: `responsive-ui-walkthrough-media`.
+- Formal documents without screenshots: `document-builder`.

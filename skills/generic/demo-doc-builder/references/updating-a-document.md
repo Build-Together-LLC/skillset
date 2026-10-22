@@ -9,6 +9,9 @@ Most of the work is already done: the old build folder has the generator, the pl
 - If there is no build folder, treat it as a new document (Step 0 of SKILL.md) and read the old .docx for the structure.
 
 ## 2. Work out what changed
+- **Fetch the product's integration branch first** (`git fetch`, then `git log HEAD..<remote>/<branch>`). Teammates merge UI changes while you work, and a
+  stale checkout shows the old screens. In one update the console had moved to a new address, its layout and fields were new, and the guest pages were
+  restyled, all in pull requests merged after the guide was built.
 - `git log --since=<date of the old document> --stat` in the product repo, and read the messages. Make a table of
   change -> sections and pictures it touches. Put a short "What changed since <old version>" table in the new overview.
 - Check the facts again, not only the diff: field names, button wording, URLs, roles, defaults. Run the new code paths and

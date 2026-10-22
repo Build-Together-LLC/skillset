@@ -52,6 +52,7 @@ line is what decides when a skill fires — edit it, not the body, if a skill tr
 | `document-builder` | Produce any formal document as a styled .docx (or Markdown) using the house format: Times New Roman 12pt justified, real Word heading styles that... |
 | `manager-work-report` | Build a manager-ready .docx work report for any date range from GitHub PRs and commits, timesheet, Jira and console logs: summary, week table, 3-4 lines per day, pending and blocked, with clickable links. |
 | `feature-to-prd` | Architect agent that transforms a preliminary feature document, presentation, or brief into a fully structured Product Requirements Document (PRD)... |
+| `flow-video-builder` | Build a narrated, screen-recorded video of a complete product flow: real browser recordings with a cursor and red highlight boxes, scene title cards, WhatsApp-style chat replays, an offline soft voice-over (Piper, or Maya1 on a GPU) synchronised to every click, subtitles, and an OCR scan of the finished video for real names and emails. |
 | `frappe-api` | Frappe Python and JavaScript API reference including document operations, database queries, utilities, and REST API patterns |
 | `frappe-architect` | Turns a BRD or feature brief into a technical architecture plan for Frappe/ERPNext |
 | `frappe-debug` | Investigate a Frappe/ERPNext error or unexpected behavior |
