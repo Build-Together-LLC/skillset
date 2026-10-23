@@ -49,7 +49,8 @@ Read `README.md` for the folder layout and a first run. This file is the working
    list of sentences; a step says which sentence it belongs to with `"s": index`.
 5. **Voice:** `python scripts/tts.py --project DIR`. Unchanged scenes keep their audio.
 6. **Record:** `node scripts/record.js --project DIR [sceneId ...]`. Read every `step failed` line.
-   Open `rec/<scene>/last.png` to see where a scene ended. Fix selectors, record only that scene again.
+   Open `rec/<scene>/last.png` to see where a scene ended, and cut frames at the sentence start times to check the timing. Fix selectors, record only that scene again.
+   For flows that change data, script the run (`references/recording-notes.md`, "Flows that change data").
 7. **Assemble:** `python scripts/assemble.py --project DIR` gives `out/video.mp4`, `video.srt`, `transcript.md`.
 8. **Check:** play frames from each scene (extract with ffmpeg), then
    `python scripts/ocr_scan.py --video out/video.mp4 --terms terms.txt`. Build `terms.txt` from the real

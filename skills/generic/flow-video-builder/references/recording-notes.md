@@ -91,3 +91,45 @@ A monitor that only waits for a final line hangs for its whole timeout if the re
   (`setup.sh` installs it). If recording says "ffmpeg is not installed", run `setup.sh` again.
 - The final pass lowers the loudness to -21 LUFS and resamples to 44.1 kHz. Without the resample, the
   loudness filter outputs 96 kHz audio.
+
+## Flows that change data
+
+- **Script the whole run.** Write one `chain.sh` that resets the demo data, works out the names the new records will get, rebuilds `flow.json`, records the
+  scenes in order and runs a small helper between scenes (`prep.py before_swap`, `before_deny`) for records that are not worth clicking through again
+  (`templates/chain.example.sh`). A scene that changes data cannot be taken twice. Fixing scene 9 meant resetting and taking scenes 8 to 13 again, so keep the chain one command.
+- **Names move.** A naming series keeps counting after a reset. Read the series value after the reset, write the expected names to `names.json`, and have
+  `flow.py` read it. For records made earlier in the same run, open them from the list instead: url `/app/<doctype>?<field>=<full name>` and a `pre` step
+  that clicks the row.
+- **Keep spare subjects.** When a take leaves a record in a state you do not want (a reason already typed, a review history with two rows), the next take
+  needs another fictional record. Seed more records than the story uses.
+- **Search boxes match inside words.** Typing `Ria` picked `Maria`. Type the full name or the id.
+- **A scene is slower than its narration, never faster.** `record.js` prints one line at the end of each scene, and a scene takes the narration plus 7 to 20 seconds
+  of page load. Silence for a few minutes is normal. Check that the `.webm` in `rec/<scene>/` is growing before you stop it, and wait on a log marker with an
+  `until` loop in a background command, not on a timer.
+
+## Timing: steps run one after another
+
+- A step starts at its sentence time plus `d`, or as soon as the step before it has finished, whichever is later. Typing a name, waiting for the form to fill,
+  choosing a value and saving takes 10 to 14 seconds. If those steps are attached to sentence 1 and sentence 2 describes the result, the picture is 10 seconds
+  behind the voice. Attach the whole chain to sentence 0, keep the in-step waits short, and let the sentence that describes the result start after it.
+- After recording, check the timing instead of trusting it: read `audio/timing.json` for the start of each sentence, cut a frame at those times with the
+  bundled ffmpeg (`ffmpeg -ss <offset + t> -i rec/<scene>/*.webm -frames:v 1 f.png`, offset from `meta.json`) and look at it.
+- Contact sheets of the finished video (`ffmpeg -vf fps=1/12,scale=480:300,tile=4x4`) show a wrong highlight, a leftover popup or a loading splash in four looks.
+
+## Pages that surprise you
+
+- **Background jobs finish after the page loaded.** A comment written by a job is not on the open form. Reload (`eval` `location.reload()`, then `wait`), scroll to
+  the bottom with `scroll` `y: 8000`, then highlight. A scroll of 1800 px stopped halfway.
+- **A save re-renders the form.** Collapsed sections that you opened close again. Open them again before the next highlight, or the red box lands on whatever now
+  sits at that position.
+- **A `pre` step that throws ends the scene.** Steps in `steps` only print `step failed`, but `pre` is not caught. Use `eval` with optional chaining for things
+  that may or may not be there: `[...document.querySelectorAll('button')].find(b=>/Skip tour/.test(b.innerText))?.click()`.
+- **First-visit tours.** A single page app may open a "Step 1 of 9" overlay in every fresh browser context. Dismiss it in `pre`.
+- **A screen that hides a button from the demo login.** The recording login must hold the roles the screen checks. Ask whether the button is missing for the demo
+  user or for everyone. In one app it was missing for everyone (a bug), which became a scene of its own.
+- **Show a gap honestly.** When the screen cannot do something, record the missing button, then do it through the app's own API from the page
+  (`eval` `frappe.xcall('<method>', {...}).then(() => location.reload())`), say so in the narration, and show the result. Do not fake the click.
+- **Duplicate toolbars.** `locator.first()` can pick a hidden duplicate and time out. Add `:visible`, and prefer a class (`button.btn-primary:visible`) to `>> nth=1`.
+  Link-field options are `ul[role=listbox]:visible div[role=option]`.
+- **A list view remembers its last filter** per user. Give the url an explicit filter before you shoot it.
+- **Accept the "unsaved changes" prompt** when you leave a new form (`page.on('dialog', d => d.accept())`). Dismissing it cancels the navigation.

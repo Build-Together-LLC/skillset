@@ -44,6 +44,7 @@ Add a short *Say:* line under diagrams. Put numbers on screenshots and use the s
   Phone screenshots <= 2.4 in wide, a full-page desktop screenshot <= 5.9 in in a split, a wide band <= 9.4 in alone.
 - Crop a portrait document image (an A4 invoice) to its top half; the rest is white.
 - Diagrams that run wide (6 or more boxes) need `"width": 1900` or more in the diagram plan or the last box is cut.
+- A stacked picture (a page, a list and a popup in one figure) must be cropped to the bands you talk about. Three stacked full pages spilled one slide over three pages.
 - Remove the trailing blank paragraph risk: a table at the very bottom of a page can push an empty page. Shrink the
   picture above it.
 

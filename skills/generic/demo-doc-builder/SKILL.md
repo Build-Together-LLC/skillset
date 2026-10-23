@@ -42,6 +42,7 @@ Everything lives next to this file:
 | `templates/brief.md`, `templates/themes.json` | what the user fills in, the colour themes |
 | `templates/frappe_seed_teardown.py` | manifest-based seed and teardown of fictional records, restores the settings it changed |
 | `templates/frappe_run.py` | run a seed or teardown script inside a site without `bench console` (the console mangles multi-line scripts) |
+| `templates/docshots_harness.example.js`, `templates/make_final.example.py` | an example screenshot harness for a flow that changes data (boxes in image pixels, exact text spans, stacked pictures) |
 | `references/*.md` | hosting recipes, Frappe demo-data lessons, security rules, writing style, **presentation-demo**, **updating-a-document**, **review-checklist**, **chat-mockups** |
 | `examples/` | a complete working sample: `bash examples/run-example.sh purple`; `slides_example.py` shows presentation mode |
 

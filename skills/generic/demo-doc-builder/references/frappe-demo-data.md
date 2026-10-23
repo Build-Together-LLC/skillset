@@ -58,3 +58,22 @@ Lessons from real runs. Follow them every time.
     they do: dry run first, skip password and key fields, skip site-specific ids (for example a WhatsApp number id), and read the result back.
 25. **Lists fill themselves with real people.** Host chips, link drop-downs, search lists, "Assigned To" and linked-record cards show real names and
     work emails even when the seed is fictional. Hide or rewrite them before shooting (see `security-and-privacy.md`, "Real data inside auto-filled lists").
+26. **No database root password and an existing empty site.** `bench new-site` is out, so check what the site holds (students, company, workflow) and whether the
+    apps are current. Take a backup first (`bench --site <site> backup`), run `bench --site <site> migrate --skip-failing` (patches of apps that are newer than the
+    site fail and are skipped), then expect the leftovers of a half-installed site: a Custom Field on `Company` that points at a DocType of an uninstalled app makes
+    every `Company` insert fail with "Module import failed for ..." (delete the field after checking `frappe.db.exists('DocType', options)`), a missing `Warehouse Type`
+    `Transit`, and the setup wizard on every page (`update \`tabInstalled Application\` set is_setup_complete=1` and System Settings `setup_complete`).
+    Create a company with the abbreviation the seed expects. Say in the hand-over that the site was changed and where the backup is.
+27. **Seed scripts guard their site name** on purpose. Do not edit the guard: run a retargeted copy from your build folder, only after you have shown that the site holds
+    nothing. Remove the config flags the guard needs (`allow_tests`) and any `mute_emails` you set when you are done. `bench remove-config` does not exist, edit `site_config.json`.
+28. **Shoot a flow that changes data with one harness.** Follow the product in the order a person would, reset first, and write the target boxes while the page is on
+    screen (see `templates/docshots_harness.example.js`): boxes in image pixels need no scroll arithmetic, `{"box": [shot, n]}` in annotate.py uses them as they are,
+    a `Range` over a text node gives the exact span of one sentence inside a popup, and pictures that need two states are shot as pieces and stacked afterwards
+    (`templates/make_final.example.py`). Shoot a state that exists only mid-flow (a matched pair, a pending request) before the action that consumes it.
+29. **Stacked pictures must stay short.** A stack of three full pages is three slides tall and spills over two extra pages. Crop each piece to a band around its target.
+30. **Frappe desk selectors that bit.** Link-field options are `ul[role=listbox]:visible div[role=option]`. A form can carry two buttons named Actions (custom tools and
+    workflow): use `.page-actions button.btn-primary:visible:has-text("Actions")`, not `nth`. A search for `Ria` matches `Maria`: type the full name. A list view
+    keeps the last filter: pass one in the url. Leaving a new, unsaved form raises a prompt: accept it (`page.on('dialog', d => d.accept())`) or the navigation is cancelled.
+31. **Give the demo login the roles the screens check**, and ask whether a missing button is missing for the demo user or for everyone. In one app it was missing for
+    everyone, because a custom page's template passed a `user` key that Frappe's website context overwrites with the username string, so the browser saw no roles.
+    That is a product bug to report, not a screenshot to fake.
