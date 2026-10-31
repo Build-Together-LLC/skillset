@@ -21,4 +21,4 @@ Source: https://github.com/UnityAppSuite/unity_dev_tools (`skills/`).
 `timesheet-suite` and `manager-work-report` also exist in unity_dev_tools but are already in the
 general `skills/generic/` folder here, so they are not repeated.
 
-Link them with `ln -s ~/skillset/skills/unity/* ~/.claude/skills/`.
+Link them with `ln -s ~/skillset/skills/personal/* ~/.claude/skills/`.

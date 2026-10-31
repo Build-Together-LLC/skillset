@@ -11,7 +11,7 @@ tenant's folder instead:
 |---|---|
 | `skills/generic/` | Product-agnostic skills |
 | `skills/vidira/` | Skills specific to Vidira (VIPL): supplier invoices, inwarding, reorder |
-| `skills/unity/` | Skills specific to the Unity / Walnut bench |
+| `skills/personal/` | Skills specific to the Unity / Walnut bench |
 
 ## Install
 
