@@ -1,0 +1,19 @@
+{
+ "detect": [
+  "REMSONS INDUSTRIES LTD",
+  "PRODUCT CODE"
+ ],
+ "date_format": "%d.%m.%Y",
+ "header": {
+  "supplier_gstin": "GST No\\.:\\s*(26AAACR3396K2Z\\w)",
+  "supplier_name": "(REMSONS INDUSTRIES LTD)\\.",
+  "document_no": "INVOICE NO\\.:\\s*(\\d+)",
+  "document_date": "Date of Issue\\s+([\\d.]+)",
+  "subtotal": "Taxable Amount:\\s+([\\d,.]+)",
+  "total_qty": "^\\s*Total\\s+([\\d,]+)\\s+[\\d,.]+\\s*$",
+  "discount_total": "Spl\\. Disc\\s+[\\d.]+%\\s+(-?[\\d,.]+)",
+  "tax_total": "IGST Amount:\\s+([\\d,.]+)",
+  "grand_total": "Grand Total:\\s+([\\d,.]+)"
+ },
+ "row": "^\\s*\\d+\\s+(?P<code>\\w+)\\s+(?P<desc>.+?)\\s+\\d{8}\\s+\\d+\\s+(?P<qty>[\\d,]+)\\s+[A-Z]+\\s+(?P<mrp>[\\d,.]+)\\s+(?P<rate>[\\d,.]+)\\s+(?P<taxable>[\\d,.]+)\\s*$"
+}

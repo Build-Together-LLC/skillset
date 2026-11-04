@@ -1,0 +1,18 @@
+{
+ "detect": [
+  "ROCKMAN INDUSTRIES LIMITED",
+  "RIL Part"
+ ],
+ "copy_start": "^\\s*TAX INVOICE\\s*$",
+ "date_format": "%d.%m.%Y",
+ "header": {
+  "supplier_gstin": "GST No\\.\\s*:\\s+(03AAACR7866E2ZE)",
+  "supplier_name": "(ROCKMAN INDUSTRIES LIMITED)",
+  "document_no": "Invoie No\\.\\s*:\\s+(\\S+)",
+  "document_date": "^\\s*Date\\s*:\\s+([\\d.]+)",
+  "subtotal": "TOTAL\\s+\\d+\\s+PAC\\s+[\\d,.]+\\s+[\\d,.]+\\s+[\\d,.]+\\s+[\\d,.]+\\s+([\\d,.]+)",
+  "total_qty": "TOTAL\\s+(\\d+)\\s+PAC",
+  "grand_total": "GRAND TOTAL\\s+([\\d,.]+)"
+ },
+ "row": "^\\s*\\d+\\s+(?P<code>RK-[A-Z]+-)\\s+\\S+\\s+\\d{8}\\s+(?P<desc>.+?)\\s+\\d+\\s+(?P<qty>\\d+)\\s+[A-Z]+\\s+(?P<rate>[\\d,.]+)\\s+[\\d,.]+\\s+[\\d,.]+\\s+(?P<taxable>[\\d,.]+)\\s+[\\d,.]+\\s+[\\d,.]+\\s+\\d+\\s+[\\d,.]+\\s*\\n\\s*(?P<code_tail>\\d+)"
+}

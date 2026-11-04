@@ -8,7 +8,7 @@ site, so they are not part of the general set.
 | `vipl-inwarding` | Supplier-invoice inward chain end to end: email, Drive PENDING folder, warehouse checking CSV, purchase-receipt draft |
 | `vipl-purchase-import` | Turns a supplier tax invoice (PDF or INVCEXL xlsx) into ERPNext import files for new items and a purchase receipt |
 | `vipl-reorder` | Reorder and purchase-ordering engine: what to buy, how much and when, brand by brand |
-| `vipl-invoice-layouts` | Reads a known supplier's invoice PDF from a saved layout with no AI cost, falls back to the AI, and writes new layouts; samples for Varroc and Shree Amba |
+| `vipl-invoice-layouts` | Reads a known supplier's invoice PDF from a saved layout with no AI cost, falls back to the AI, and writes new layouts; seven proven layouts (Varroc, Shree Amba, Rockman, Texspin, SAP Swiss, FCC, Remsons) |
 | `warehouse-inward-csv` | Converts a supplier inward/GRN invoice into the standard warehouse-inward CSV, one file per invoice |
 
 Link them with `ln -s ~/skillset/skills/vidira/* ~/.claude/skills/`.

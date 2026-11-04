@@ -1,0 +1,101 @@
+[
+ {
+  "supplier_name": "Varroc Engineering Limited",
+  "layout": "varroc_engineering.json",
+  "rules": [
+   [
+    "([A-Z0-9]+)-([A-Z0-9]+)-([A-Z0-9/]+)",
+    "W\\1\\2\\3"
+   ]
+  ]
+ },
+ {
+  "supplier_name": "Shree Amba Industries",
+  "layout": "shree_amba_industries.json",
+  "rules": []
+ },
+ {
+  "supplier_name": "Rockman Industries Ltd.",
+  "layout": "rockman_industries.json",
+  "rules": []
+ },
+ {
+  "supplier_name": "Texspin Bearings Ltd",
+  "layout": "texspin_bearings.json",
+  "rules": [
+   [
+    "TX-(\\d+)\\((\\w+)\\)\\w+",
+    "TX\\1-\\2"
+   ]
+  ]
+ },
+ {
+  "supplier_name": "SAP SWISS SOLUTIONS PRIVATE LIMITED",
+  "layout": "sap_swiss_solutions.json",
+  "rules": [
+   [
+    "SAP-(.+)",
+    "SLM\\1"
+   ]
+  ]
+ },
+ {
+  "supplier_name": "FCC Clutch India Pvt.Ltd.",
+  "layout": "fcc_clutch_india.json",
+  "rules": [
+   [
+    "FCC-H-DRN-110-C\\.ASSY-ORG",
+    "7HDRY110CASSY"
+   ],
+   [
+    "FCC-B-PUL-150-UG4-C\\.ASSY-ORG",
+    "7BPUL150UG4CAASY"
+   ],
+   [
+    "FCC-BHE-PLE-PULLEY-100-ORG",
+    "7BHEPLEPULLEY"
+   ],
+   [
+    "FCC-([\\w]+)-([\\w]+)-([\\w]+)-([\\w]+)-C\\.ASSY-ORG",
+    "7\\1\\2\\3\\4CASSY"
+   ],
+   [
+    "FCC-([\\w]+)-([\\w]+)-([\\w]+)-C\\.ASSY-ORG",
+    "7\\1\\2\\3CASSY"
+   ],
+   [
+    "FCC-([\\w]+)-([\\w]+)-([\\w]+)-WHEEL-ORG",
+    "7\\1\\2\\3WHL"
+   ],
+   [
+    "FCC-([\\w]+)-([\\w]+)-([\\w]+)-P\\.PLATE-?",
+    "7\\1\\2\\3PPLATE"
+   ],
+   [
+    "FCC-([\\w]+)-ORG",
+    "7\\1"
+   ],
+   [
+    "FCC-([\\w]+)-([\\w]+)-ORG",
+    "7\\1\\2"
+   ],
+   [
+    "FCC-([\\w]+)-([\\w]+)-([\\w]+)-ORG",
+    "7\\1\\2\\3"
+   ],
+   [
+    "FCC-([\\w]+)-([\\w]+)-([\\w]+)-([\\w]+)-ORG",
+    "7\\1\\2\\3\\4"
+   ],
+   [
+    "FCC-([\\w]+)-([\\w]+)-([\\w]+)-([\\w]+)-([\\w]+)-ORG",
+    "7\\1\\2\\3\\4\\5"
+   ]
+  ]
+ },
+ {
+  "supplier_name": "Remsons Industries Limited",
+  "layout": "remsons_industries.json",
+  "rules": []
+ }
+]

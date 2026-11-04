@@ -1,0 +1,17 @@
+{
+ "detect": [
+  "FOR M/s SAP Swiss Solutions",
+  "ITEM CODE"
+ ],
+ "date_format": "%d-%m-%Y",
+ "header": {
+  "supplier_name": "FOR M/s (SAP Swiss Solutions Pvt\\. Ltd\\.)",
+  "document_no": "INV\\. No\\. :\\s*(\\S+)",
+  "document_date": "Date\\s*:\\s*([\\d-]+)",
+  "subtotal": "^TOTAL\\s+[\\d,.]+\\s+([\\d,.]+)\\s*$",
+  "tax_total": "Total GST\\s*:\\s*([\\d,.]+)",
+  "grand_total": "Total Sale Price\\s*:\\s*([\\d,.]+)",
+  "total_qty": "^TOTAL\\s+([\\d,.]+)\\s+[\\d,.]+\\s*$"
+ },
+ "row": "^\\s*\\d+\\s+(?P<code>SAP-\\S+)\\s+\\d{8}\\s+(?P<desc>.+?)\\s+(?P<mrp>[\\d,.]+)\\s+(?P<rate>[\\d,.]+)\\s+(?P<qty>[\\d.]+)\\s+[A-Z]+\\s+[\\d.]+\\s+(?P<taxable>[\\d,.]+)\\s*$"
+}

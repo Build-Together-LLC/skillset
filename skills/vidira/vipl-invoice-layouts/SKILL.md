@@ -1,6 +1,6 @@
 ---
 name: "vipl-invoice-layouts"
-description: "Read a VIPL supplier invoice PDF without an AI call by using that supplier's saved layout (regexes for the header and item rows), and write a new layout when a supplier has none. Use when someone asks to read, parse, extract or scan a supplier invoice for VIDIRA / VIPL, to add or fix a supplier's layout in Supplier Invoice Profile, when an invoice 'returns no data' or the skill 'stops to ask', or to cut the API cost of the Scan Invoice page. Covers Varroc and Shree Amba (Aerostar) today; any other supplier falls back to the AI read."
+description: "Read a VIPL supplier invoice PDF without an AI call by using that supplier's saved layout (regexes for the header and item rows), and write a new layout when a supplier has none. Use when someone asks to read, parse, extract or scan a supplier invoice for VIDIRA / VIPL, to add or fix a supplier's layout in Supplier Invoice Profile, when an invoice 'returns no data' or the skill 'stops to ask', or to cut the API cost of the Scan Invoice page. Covers Varroc, Shree Amba (Aerostar), Rockman, Texspin, SAP Swiss, FCC and Remsons today; camera scans and any other supplier fall back to the AI read."
 ---
 
 # VIPL — read supplier invoices from a saved layout
@@ -30,7 +30,7 @@ that is exactly how the old `SKILL.md` failed on Spark Minda, which had no suppl
 | Item code rules | Same profile, **Item Code Rules** table (pattern + replacement, e.g. `AM-(\d+)` → `L\1`) |
 | Reader | `vidira_group/inward_scan/layouts.py` |
 | Learning | `vidira_group/inward_scan/learn.py` |
-| Samples | `references/layouts/` (Varroc, Shree Amba) |
+| Samples and rules | `references/layouts/` (seven layouts + `index.json` with each supplier's item code rules); in the app, `inward_scan/sample_layouts/` and `samples.install()` |
 | Settings | `Inward Scan Settings`: **Always Read With The AI Provider** (off), **Learn Layouts From AI Reads** (off) |
 
 Layout format and every field: `references/layout-format.md`. Which supplier is ready and why:
@@ -45,6 +45,14 @@ Layout format and every field: `references/layout-format.md`. Which supplier is 
 A layout that reads rows but fails a check is rejected silently and the AI reads the file. This is
 what stops a changed supplier layout from booking wrong numbers.
 
+## Which PDFs can be read locally
+
+Check the PDF **Producer** first (`pdfinfo file.pdf`). Software-generated invoices (SAP forms,
+TallyPrime, wkhtmltopdf, Reporting Services) have clean text. **Adobe Scan, CamScanner and similar
+are camera scans**: their text layer is OCR with errors (`g90.00155..O0`, HSN fused with quantity,
+dropped digits), so a layout would fail its checks and fall back anyway. Do not write layouts for them.
+Of the 53 sample PDFs only about ten are software-generated; the rest are scans.
+
 ## Write a layout for a new supplier
 
 Do this only with a PDF that has a text layer and, ideally, a booked Purchase Receipt for it.
@@ -57,6 +65,12 @@ Do this only with a PDF that has a text layer and, ideally, a booked Purchase Re
    `total_qty`. Leave out any field the invoice does not print. `date_format` is a strptime string.
 4. `row`: one regex run with `re.M` over the whole text. Named groups `code`, `qty`, `taxable`
    are required; `desc`, `rate`, `mrp`, `cust_code` are optional. A row may continue on the next line.
+   A code printed on two lines is captured as `code` plus `code_tail` and joined (Rockman, FCC).
+   `taxable` is the value after the row discount and before GST.
+   If the same invoice is printed twice in the PDF and the copies are not near-identical, add
+   `copy_start`, a regex for the top of each copy, and only the first copy is read (Texspin, Rockman).
+   An invoice-level discount goes in `header.discount_total`; the reader checks rows minus that
+   discount against the printed subtotal, as the app does.
 5. Save it in the supplier's profile. Save refuses a layout that does not compile or lacks a
    required group.
 6. **Prove it** before trusting it: parse the invoice and compare every row with a reference —
@@ -74,6 +88,8 @@ It costs a little more per new supplier and never replaces an existing layout.
 
 ## Traps seen on real invoices
 
+- **Blank or damaged page.** pypdf raises on a page with no content; the reader treats it as empty.
+- **Master typos.** FCC's `7HDRY110CASSY` and `7BPUL150UG4CAASY` are spelled that way in the item master, so the rules map to the misspelling. Fix the master, then the rule.
 - **Fused columns.** pypdf can join HSN and quantity (`851180003` is HSN `85118000` and quantity
   `3`). Match the HSN length in the regex: `\d{8}(?P<qty>\d+)`.
 - **GST-inclusive Amount column.** Charan Autotech prints Amount = qty × price × 1.18. `taxable`

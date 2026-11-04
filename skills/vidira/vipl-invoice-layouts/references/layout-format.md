@@ -19,9 +19,10 @@ A layout is JSON stored in `Supplier Invoice Profile.layout`.
 | Key | Meaning |
 |---|---|
 | `detect` | List of regexes. The layout applies only when **all** match somewhere in the text. |
+| `copy_start` | Optional regex for the top of each printed copy. When it matches more than once, only the first copy is parsed. |
 | `date_format` | strptime format of `document_date` (`%d-%b-%Y` reads `31-MAR-2026`). |
-| `header` | Field → regex with **one** capture group. Fields: `supplier_name`, `supplier_gstin`, `document_no`, `document_date`, `subtotal`, `tax_total`, `grand_total`, `total_qty`. Numbers keep printed commas; a trailing `-` is dropped. |
-| `row` | One regex, run with `re.M` over the whole text. Required groups `code`, `qty`, `taxable`. Optional `desc`, `rate`, `mrp`, `cust_code`. |
+| `header` | Field → regex with **one** capture group. Fields: `supplier_name`, `supplier_gstin`, `document_no`, `document_date`, `subtotal` (after any invoice-level discount), `tax_total`, `grand_total`, `total_qty`, `discount_total` (printed negative, stored positive). Numbers keep printed commas; a trailing `-` is dropped. |
+| `row` | One regex, run with `re.M` over the whole text. Required groups `code`, `qty`, `taxable`. Optional `desc`, `rate`, `mrp`, `cust_code`, `code_tail` (joined to `code` when the code wraps onto a second line). |
 
 Output has the same shape as the AI reply, so matching, MRP, totals and the draft receipt work
 unchanged: `document_type` is `tax_invoice`, `confidence` 100, lines carry

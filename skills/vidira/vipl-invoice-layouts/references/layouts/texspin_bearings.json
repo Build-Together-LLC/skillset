@@ -1,0 +1,18 @@
+{
+ "detect": [
+  "Our GSTN:\\s+24AAACT5735G1ZH",
+  "Asessable"
+ ],
+ "copy_start": "^\\s*Name & Address of Consignee",
+ "date_format": "%d.%m.%Y",
+ "header": {
+  "supplier_gstin": "Our GSTN:\\s+(24AAACT5735G1ZH)",
+  "document_no": "Invoice No\\.:\\s+(\\d+)",
+  "document_date": "Invoice Date:\\s+([\\d.]+)",
+  "subtotal": "Sub Total\\s+([\\d,.]+)",
+  "tax_total": "Sub Total of Duty\\s+([\\d,.]+)",
+  "grand_total": "Grand Total\\s+([\\d,.]+)",
+  "total_qty": "^\\s+(\\d+)\\s+[\\d,.]+\\s+[\\d,.]+\\s+[\\d,.]+\\s*$"
+ },
+ "row": "^\\s*\\d+\\s+(?P<desc>\\S+\\s+(?P<code>TX-\\S+))\\s+\\d{8}\\s+\\d+\\s+\\S+\\s+(?P<qty>\\d+)\\s+(?P<rate>[\\d,.]+)\\s+[\\d,.]+\\s+[\\d,.]+\\s+(?P<taxable>[\\d,.]+)\\s*$"
+}

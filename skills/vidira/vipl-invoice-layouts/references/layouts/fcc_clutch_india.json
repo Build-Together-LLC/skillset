@@ -1,0 +1,18 @@
+{
+ "detect": [
+  "FCC CLUTCH INDIA",
+  "Part No\\."
+ ],
+ "copy_start": "^\\s*(?:Original|Duplicate|Triplicate) for ",
+ "date_format": "%d.%m.%Y",
+ "header": {
+  "supplier_gstin": "GSTIN\\s*:\\s*(06AACCF4739N1ZA)",
+  "supplier_name": "Consigner Name\\s*:\\s*(.+?)\\s*$",
+  "document_no": "Invoice No\\.\\s*:\\s*(\\d+)",
+  "document_date": "Invoice Date\\s*:\\s*([\\d.]+)",
+  "subtotal": "^\\s*Total\\s+[\\d,.]+\\s+[\\d,.]+\\s+([\\d,.]+)\\s+[\\d,.]+\\s+[\\d,.]+\\s+[\\d,.]+\\s*$",
+  "tax_total": "^\\s*Total\\s+[\\d,.]+\\s+[\\d,.]+\\s+[\\d,.]+\\s+[\\d,.]+\\s+[\\d,.]+\\s+([\\d,.]+)\\s*$",
+  "grand_total": "Total Invoice Value \\( In Figure \\)\\s+([\\d,.]+)"
+ },
+ "row": "^\\s*\\d+\\s*(?P<code>FCC-\\S+)\\s+(?P<desc>.+?)\\s+\\d{8}\\s+(?P<qty>[\\d.]+)\\s+(?P<rate>[\\d,.]+)\\s+[\\d,.]+\\s+[\\d,.]+\\s+(?P<taxable>[\\d,.]+)\\s+.*\\n {3,}(?P<code_tail>[A-Z0-9][\\w.-]*)\\s*\\.?\\s*$"
+}
