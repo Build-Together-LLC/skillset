@@ -1,0 +1,18 @@
+{
+ "detect": [
+  "For Varroc Engineering",
+  "Varroc Part code"
+ ],
+ "date_format": "%d.%m.%Y",
+ "header": {
+  "supplier_gstin": "GSTIN\\s*:\\s*(27AAACV2420J1Z\\w)",
+  "supplier_name": "For (Varroc Engineering Limited)",
+  "document_no": "Invoice No\\s*:\\s*(\\d+)",
+  "document_date": "Invoice Date\\s*:\\s*([\\d.]+)",
+  "subtotal": "Net Value\\s+([\\d,.]+)",
+  "tax_total": "Total IGST\\s+([\\d,.]+)",
+  "grand_total": "Grand\\s+([\\d,.]+)",
+  "total_qty": "^\\s*Total\\s+(\\d+)\\s+[\\d,.]+-?\\s+[\\d,.]+\\s+Total IGST"
+ },
+ "row": "^\\s*\\d+\\s+(?P<code>[A-Z0-9][A-Z0-9/-]*)\\s+K\\w+\\s+\\d{8}(?P<qty>\\d+)\\s+(?P<rate>[\\d,]+\\.\\d+)\\s+\\S+%\\s+[\\d,.]+-?\\s+(?P<taxable>[\\d,]+\\.\\d+)\\s+[CIS]GST@[\\d.]+\\s*%\\s+[\\d,.]+\\s*\\n\\s*(?P<desc>.+?)(?:\\s{2,}\\w+)?\\s*$"
+}

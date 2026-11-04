@@ -1,0 +1,17 @@
+{
+ "detect": [
+  "SHREE AMBA INDUSTRIES",
+  "ITEM CODE"
+ ],
+ "date_format": "%d-%b-%Y",
+ "header": {
+  "supplier_gstin": "GSTIN\\s*:\\s*(05ABKFS0581P1Z\\w)",
+  "supplier_name": "(SHREE AMBA INDUSTRIES)",
+  "document_no": "INVOICE NO\\.\\s*:-\\s*(\\S+)",
+  "document_date": "INVOICE DATE\\s*:-\\s*(\\S+)",
+  "subtotal": "^\\s*TOTAL\\s*:--\\s+\\d+\\s+([\\d,.]+)",
+  "tax_total": "^\\s*TOTAL\\s*:--\\s+\\d+\\s+[\\d,.]+\\s+([\\d,.]+)",
+  "total_qty": "^\\s*TOTAL\\s*:--\\s+(\\d+)"
+ },
+ "row": "^\\s*\\d+\\s+(?P<code>\\S+)\\s+\\d{8}\\s+(?P<desc>.+?)\\s{2,}(?P<qty>\\d+)\\s+[A-Z]+\\s+(?P<mrp>[\\d,.]+)\\s+(?P<rate>[\\d,.]+)\\s+[\\d.]+\\s+(?P<taxable>[\\d,]+\\.\\d+)\\s+[\\d.]+\\s"
+}
