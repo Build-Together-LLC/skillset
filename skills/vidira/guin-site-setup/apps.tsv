@@ -1,0 +1,12 @@
+# App set for the Guin (Retailers) site. Mirrors Frappe Cloud:
+#   Vidira - Application / Retailers / guinerp.m.frappe.cloud  -> Apps tab
+# Columns (TAB separated): order, app_name (python module / install-app name), repo_url, branch, access
+# `frappe` comes with the bench; `erpnext` is installed by `bench new-site --install-app erpnext`.
+# Branches and commits are taken from the Cloud site page (frappe/erpnext/india_compliance/payments: version-16,
+# taraknath: develop @ 47a389d, POSNext: BT @ f7b3274). Change a branch here if the Cloud site moves.
+# Install order = dependency order (india_compliance, taraknath and pos_next all need erpnext).
+# Apps already cloned in ~/frappe/bt/apps (shared with other sites) are reused, not re-cloned.
+1	payments	https://github.com/frappe/payments	version-16	public
+2	india_compliance	https://github.com/resilient-tech/india-compliance	version-16	public
+3	taraknath	https://github.com/Vidira-Innovations/taraknath	develop	private
+4	pos_next	https://github.com/Build-Together-LLC/POSNext	BT	public

@@ -1,0 +1,17 @@
+# Single source of truth for the Vidira app set. Mirrors Frappe Cloud:
+#   Vidira - Unified / Vidira (Testing)  (bench group bench-50357)
+# Columns (TAB separated): order, app_name (python module / install-app name), repo_url, branch, access
+# `frappe` and `erpnext` are NOT listed: frappe comes with the bench, erpnext is installed by `bench new-site --install-app erpnext`.
+# Install order matters (hrms needs erpnext, india_payroll needs hrms, btbanking needs india_banking_connector, vidira_group needs india_compliance).
+# Update this file if the Frappe Cloud bench changes; SKILL.md reads it.
+1	payments	https://github.com/frappe/payments	version-16	public
+2	hrms	https://github.com/frappe/hrms	version-16	public
+3	india_compliance	https://github.com/resilient-tech/india-compliance	version-16	public
+4	india_payroll	https://github.com/frappe/india-payroll	version-16	public
+5	india_banking_connector	https://github.com/aerele/india-banking-connector	version-16	public
+6	india_banking	https://github.com/aerele/india-banking	version-16	public
+7	btbanking	https://github.com/Build-Together-LLC/btbanking	Bt	public
+8	raven	https://github.com/The-Commit-Company/Raven	main	public
+9	frappe_whatsapp	https://github.com/Build-Together-LLC/frappe_whatsapp	BT	public
+10	drive_bucket	https://github.com/Build-Together-LLC/drive_bucket	develop	private
+11	vidira_group	https://github.com/Vidira-Innovations/vidira_group	develop	private

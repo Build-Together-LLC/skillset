@@ -1,0 +1,15 @@
+# App set for the AutoRider site. Mirrors Frappe Cloud:
+#   Vidira - Application / AutoRider  (autorider.m.frappe.cloud)  -> Apps tab
+# Columns (TAB separated): order, app_name (python module / install-app name), repo_url, branch, access
+# `frappe` comes with the bench; `erpnext` is installed by `bench new-site --install-app erpnext`.
+# The Frappe Cloud site page lists repositories but NOT branches. Branches below follow the Vidira bench
+# (version-16 for Frappe apps, develop for vidira_group, BT for Build-Together apps). POSNext's default branch is BT
+# and its pyproject targets frappe/erpnext >=16,<17. Change a branch here if the Cloud bench uses another one.
+# Install order = dependency order (hrms/india_compliance/pos_next need erpnext; vidira_group needs erpnext + india_compliance).
+# Apps already cloned in ~/frappe/bt/apps (shared with other sites) are reused, not re-cloned.
+1	payments	https://github.com/frappe/payments	version-16	public
+2	hrms	https://github.com/frappe/hrms	version-16	public
+3	india_compliance	https://github.com/resilient-tech/india-compliance	version-16	public
+4	vidira_group	https://github.com/Vidira-Innovations/vidira_group	develop	private
+5	frappe_whatsapp	https://github.com/Build-Together-LLC/frappe_whatsapp	BT	public
+6	pos_next	https://github.com/Build-Together-LLC/POSNext	BT	public

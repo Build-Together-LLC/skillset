@@ -1,0 +1,47 @@
+# Tables emptied by `setup_vidira_site.py --only slim` (also used by the manual commands in the READMEs).
+# One table name per line. Tables that do not exist on a site (their app is not installed) are skipped.
+# TRUNCATE cannot be undone. Only logs / queues / history belong here.
+# POLICY: transactions (invoices, orders, delivery notes, stock/GL entries, serial & batch ...) and master data
+# (items, customers, suppliers, accounts ...) are NEVER deleted. Only logs / queues / history / audit-style tables go here.
+# Heads-up: tabHD Ticket, tabSchool Notice(+Status), tabFunnel Task are real business data if those apps are ever installed.
+#
+# Left alone on purpose (look log-like but are not safe to empty blindly; decide per case):
+#   tabCommunication, tabComment, tabFile            attached to documents / real conversations
+#   tabGST Return Log, tabProcess Payment Reconciliation Log(+Allocations), tabPOS Invoice Merge Log,
+#   tabBatch Merge Log, tabRepost Item Valuation     accounting / stock bookkeeping
+#   tabVidira Notification Log, tabWhatsApp Notification Log   small; app-specific meaning
+#   __global_search                                  derived search index (empties the search bar until
+#                                                    `bench --site X rebuild-global-search`); ~300 MB on big sites
+tabVersion
+tabError Log
+tabScheduled Job Log
+tabHD Notification
+tabPWA Notification
+tabBank Request Log
+tabEasebuzz Settlement Log
+tabAccess Log
+tabActivity Log
+tabInsights Query Execution Log
+tabView Log
+tabConsole Log
+tabNotification Log
+tabWhatsapp Webhook Log
+tabEmail Queue Recipient
+tabEmail Queue
+tabDocument Follow
+tabDeleted Document
+tabIntegration Request
+tabPrepared Report
+tabUnhandled Email
+tabData Import Log
+tabCN PW Webhook Log
+tabFunnel Task
+tabSchool Notice
+tabHD Ticket
+tabSchool Notice Status
+# --- added after the Vidira / AutoRider backups were reviewed (standard, non-submittable log doctypes) ---
+tabAPI Request Log
+tabe-Invoice Log
+tabe-Waybill Log
+tabReorder Log
+tabRoute History
